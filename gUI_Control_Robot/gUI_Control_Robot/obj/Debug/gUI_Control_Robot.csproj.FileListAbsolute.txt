@@ -1,0 +1,10 @@
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\gUI_Control_Robot.exe.config
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\gUI_Control_Robot.exe
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\gUI_Control_Robot.pdb
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.AssemblyReference.cache
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.Form1.resources
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.Properties.Resources.resources
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.GenerateResource.cache
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.CoreCompileInputs.cache
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.exe
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.pdb
