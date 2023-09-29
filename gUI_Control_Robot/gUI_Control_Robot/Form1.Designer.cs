@@ -70,6 +70,9 @@ namespace gUI_Control_Robot
             this.btn_plus_Base = new System.Windows.Forms.Button();
             this.progressBar_Base = new System.Windows.Forms.ProgressBar();
             this.groupBox_Inverse = new System.Windows.Forms.GroupBox();
+            this.label_Z = new System.Windows.Forms.Label();
+            this.label_Y = new System.Windows.Forms.Label();
+            this.label_X = new System.Windows.Forms.Label();
             this.groupBox_gripper = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.comboBox_portList = new System.Windows.Forms.ComboBox();
@@ -78,9 +81,6 @@ namespace gUI_Control_Robot
             this.label2 = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.btn_stop_program = new System.Windows.Forms.Button();
-            this.label_X = new System.Windows.Forms.Label();
-            this.label_Y = new System.Windows.Forms.Label();
-            this.label_Z = new System.Windows.Forms.Label();
             this.groupBox_Forward.SuspendLayout();
             this.groupBox_Inverse.SuspendLayout();
             this.groupBox_gripper.SuspendLayout();
@@ -272,6 +272,7 @@ namespace gUI_Control_Robot
             this.btn_send_data.TabIndex = 55;
             this.btn_send_data.Text = "SEND ALL DATA";
             this.btn_send_data.UseVisualStyleBackColor = true;
+            this.btn_send_data.Click += new System.EventHandler(this.btn_send_data_Click);
             // 
             // checkBox_simultaneous
             // 
@@ -474,6 +475,33 @@ namespace gUI_Control_Robot
             this.groupBox_Inverse.TabStop = false;
             this.groupBox_Inverse.Text = "INVERSE KINEMATICS";
             // 
+            // label_Z
+            // 
+            this.label_Z.AutoSize = true;
+            this.label_Z.Location = new System.Drawing.Point(338, 63);
+            this.label_Z.Name = "label_Z";
+            this.label_Z.Size = new System.Drawing.Size(18, 20);
+            this.label_Z.TabIndex = 42;
+            this.label_Z.Text = "0";
+            // 
+            // label_Y
+            // 
+            this.label_Y.AutoSize = true;
+            this.label_Y.Location = new System.Drawing.Point(207, 63);
+            this.label_Y.Name = "label_Y";
+            this.label_Y.Size = new System.Drawing.Size(18, 20);
+            this.label_Y.TabIndex = 41;
+            this.label_Y.Text = "0";
+            // 
+            // label_X
+            // 
+            this.label_X.AutoSize = true;
+            this.label_X.Location = new System.Drawing.Point(72, 63);
+            this.label_X.Name = "label_X";
+            this.label_X.Size = new System.Drawing.Size(18, 20);
+            this.label_X.TabIndex = 40;
+            this.label_X.Text = "0";
+            // 
             // groupBox_gripper
             // 
             this.groupBox_gripper.Controls.Add(this.btn_close_gripper);
@@ -557,33 +585,6 @@ namespace gUI_Control_Robot
             this.btn_stop_program.Text = "STOP PROGRAM";
             this.btn_stop_program.UseVisualStyleBackColor = true;
             this.btn_stop_program.Click += new System.EventHandler(this.btn_stop_program_Click);
-            // 
-            // label_X
-            // 
-            this.label_X.AutoSize = true;
-            this.label_X.Location = new System.Drawing.Point(72, 63);
-            this.label_X.Name = "label_X";
-            this.label_X.Size = new System.Drawing.Size(18, 20);
-            this.label_X.TabIndex = 40;
-            this.label_X.Text = "0";
-            // 
-            // label_Y
-            // 
-            this.label_Y.AutoSize = true;
-            this.label_Y.Location = new System.Drawing.Point(207, 63);
-            this.label_Y.Name = "label_Y";
-            this.label_Y.Size = new System.Drawing.Size(18, 20);
-            this.label_Y.TabIndex = 41;
-            this.label_Y.Text = "0";
-            // 
-            // label_Z
-            // 
-            this.label_Z.AutoSize = true;
-            this.label_Z.Location = new System.Drawing.Point(338, 63);
-            this.label_Z.Name = "label_Z";
-            this.label_Z.Size = new System.Drawing.Size(18, 20);
-            this.label_Z.TabIndex = 42;
-            this.label_Z.Text = "0";
             // 
             // Form1
             // 

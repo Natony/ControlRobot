@@ -8,7 +8,7 @@ namespace gUI_Control_Robot
 {
     class forward_Kinematics
     {
-        public static void CalculateXYZ(int degree1, int degree2, int degree3, int degree4, out double x, out double y, out double z)
+        public static void CalculateXYZ(float degree1, int degree2, int degree3, int degree4, out double x, out double y, out double z)
         {
             // Chuyển đổi từ độ sang radian
             double t1 = degree1 * Math.PI / 180.0;

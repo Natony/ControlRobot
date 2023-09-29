@@ -13,36 +13,34 @@ namespace gUI_Control_Robot
 {
     public partial class Form1 : Form
     {
-        private int degree1 = 50;
-        private int degree2 = 50;
-        private int degree3 = 50;
-        private int degree4 = 50;
-        private int x;
-        private int y;
-        private int z;
+        private int degree1;
+        private int degree2;
+        private int degree3;
+        private int degree4;
+        private int x, y, z;
 
         public Form1()
         {
             InitializeComponent();
-            degree1 = 50;
-            degree2 = 50;
-            degree3 = 50;
-            degree4 = 50;
+            degree1 = 0;
+            degree2 = 0;
+            degree3 = 0;
+            degree4 = 0;
             x = 100;
             y = 100;
             z = 100;
         }
         private void update_Label()
         {
-            step_Base.Text = "5";
-            step_J1.Text = "5";
-            step_J2.Text = "5";
-            step_J3.Text = "5";
+            step_Base.Text = "9";
+            step_J1.Text = "9";
+            step_J2.Text = "9";
+            step_J3.Text = "9";
 
-            label_Base.Text = "50";
-            label_J1.Text = "50";
-            label_J2.Text = "50";
-            label_J3.Text = "50";
+            label_Base.Text = "0";
+            label_J1.Text = "0";
+            label_J2.Text = "0";
+            label_J3.Text = "0";
 
             label_X.Text = "100";
             label_Y.Text = "100";
@@ -50,10 +48,17 @@ namespace gUI_Control_Robot
         }
         private void update_ProgreesBar()
         {
-            progressBar_Base.Value = 50;
-            progressBar_J1.Value = 50;
-            progressBar_J2.Value = 50;
-            progressBar_J3.Value = 50;
+            progressBar_Base.Value = 0;
+            progressBar_J1.Value = 0;
+            progressBar_J2.Value = 0;
+            progressBar_J3.Value = 0;
+        }
+        private void updateNewProgressBar()
+        {
+            progressBar_Base.Value = degree1;
+            progressBar_J1.Value = degree2;
+            progressBar_J2.Value = degree3;
+            progressBar_J3.Value = degree4;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -96,13 +101,13 @@ namespace gUI_Control_Robot
 
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(degree1 + "A" + "\n");
-                    serialPort1.Write(degree2 + "B" + "\n");
-                    serialPort1.Write(degree3 + "C" + "\n");
-                    serialPort1.Write(degree4 + "D" + "\n");
-                    serialPort1.Write(x + "E" + "\n");
-                    serialPort1.Write(y + "F" + "\n");
-                    serialPort1.Write(z + "G" + "\n");
+                    serialPort1.Write(0 + "A" + "\n");
+                    serialPort1.Write(0 + "B" + "\n");
+                    serialPort1.Write(0 + "C" + "\n");
+                    serialPort1.Write(0 + "D" + "\n");
+                    serialPort1.Write(100 + "E" + "\n");
+                    serialPort1.Write(100 + "F" + "\n");
+                    serialPort1.Write(100 + "G" + "\n");
                 }
             }
             catch(Exception error)
@@ -119,13 +124,13 @@ namespace gUI_Control_Robot
                 {
                     if (!checkBox_simultaneous.Checked)
                     {
-                        serialPort1.Write(50 + "A" + "\n");
-                        serialPort1.Write(50 + "B" + "\n");
-                        serialPort1.Write(50 + "C" + "\n");
-                        serialPort1.Write(50 + "D" + "\n");
-                        serialPort1.Write(x + "E" + "\n");
-                        serialPort1.Write(y + "F" + "\n");
-                        serialPort1.Write(z + "G" + "\n");
+                        serialPort1.Write(0 + "A" + "\n");
+                        serialPort1.Write(0 + "B" + "\n");
+                        serialPort1.Write(0 + "C" + "\n");
+                        serialPort1.Write(0 + "D" + "\n");
+                        serialPort1.Write(100 + "E" + "\n");
+                        serialPort1.Write(100 + "F" + "\n");
+                        serialPort1.Write(100 + "G" + "\n");
                     }
                     serialPort1.Close();
 
@@ -170,7 +175,7 @@ namespace gUI_Control_Robot
         {
             try
             {
-                if (!string.IsNullOrEmpty(step_Base.Text))
+                if (step_Base.Text != null)
                 {
                     int i = Convert.ToInt32(step_Base.Text);
                     progressBar_Base.Minimum = 0;
@@ -187,6 +192,8 @@ namespace gUI_Control_Robot
                     //cập nhật giao diện
                     label_Base.Text = degree1.ToString();
                     progressBar_Base.Value = degree1;
+
+                    //Hiển thị x, y, z 
                     label_X.Text = newX.ToString();
                     label_Y.Text = newY.ToString();
                     label_Z.Text = newZ.ToString();
@@ -560,6 +567,28 @@ namespace gUI_Control_Robot
                 if (!checkBox_simultaneous.Checked)
                 {
                     serialPort1.Write(1 + "H" + "\n");
+                }
+            }
+        }
+
+        private void btn_send_data_Click(object sender, EventArgs e)
+        {
+            if (serialPort1.IsOpen)
+            {
+                if (checkBox_simultaneous.Checked)
+                {
+                    updateNewProgressBar();
+
+                    double newX, newY, newZ;
+                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
+
+                    serialPort1.Write(degree1 + "A" + "\n");
+                    serialPort1.Write(degree2 + "B" + "\n");
+                    serialPort1.Write(degree3 + "C" + "\n");
+                    serialPort1.Write(degree4 + "D" + "\n");
+                    serialPort1.Write(x + "E" + "\n");
+                    serialPort1.Write(y + "F" + "\n");
+                    serialPort1.Write(z + "G" + "\n");
                 }
             }
         }
