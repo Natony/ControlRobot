@@ -11,17 +11,11 @@ String dataIn;
 int8_t indexOfA;
 
 // Thêm biến để lưu trữ góc mục tiêu và góc hiện tại của động cơ
-int currentDegree = 0;
-int targetDegree = 0;
-int steps;
-void peripheral_setup() {
-}
-
-void peripheral_loop() {
-}
+int curDegreeMotor1 = 0;
+int tarDegreeMotor1 = 0;
+int stepsMotor1;
 
 void setup() {
-  peripheral_setup();
   Serial.begin(9600);
 
   lcd.init();
@@ -35,7 +29,6 @@ void setup() {
 }
 
 void loop() {
-  peripheral_loop();
   Receive_Serial_Data();
   if (c == '\n') {
     Parse_the_Data();
@@ -44,27 +37,27 @@ void loop() {
   }
 
   lcd.setCursor(0, 0);
-  lcd.print(targetDegree); // Hiển thị góc hiện tại thay vì stpMoto1Degree
+  lcd.print(tarDegreeMotor1); // Hiển thị góc hiện tại thay vì stpMoto1Degree
   lcd.setCursor(0, 1);
-  lcd.print(steps);
+  lcd.print(stepsMotor1);
   motorStepper1();
 }
 
 void motorStepper1() {
-  if (targetDegree != currentDegree) {
-    int degreeDiff = targetDegree - currentDegree;
+  if (tarDegreeMotor1 != curDegreeMotor1) {
+    int diffDegreeMotor1 = tarDegreeMotor1 - curDegreeMotor1;
 
-    steps = degreeDiff / 1.8;
-    digitalWrite(dir, steps > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên steps
+    stepsMotor1 = diffDegreeMotor1 / 1.8;
+    digitalWrite(dir, stepsMotor1 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     lcd.setCursor(0, 1);
-    for (int i = 0; i < abs(steps); i++) {
+    for (int i = 0; i < abs(stepsMotor1); i++) {
       digitalWrite(step, HIGH);
       delayMicroseconds(10000);
       digitalWrite(step, LOW);
       delayMicroseconds(10000);
     }
 
-    currentDegree = targetDegree; // Cập nhật góc hiện tại
+    curDegreeMotor1 = tarDegreeMotor1; // Cập nhật góc hiện tại
   }
 }
 
@@ -86,6 +79,6 @@ void Parse_the_Data() {
 
   if (indexOfA > -1) {
     str_stpMoto1Degree = dataIn.substring(0, indexOfA);
-    targetDegree = str_stpMoto1Degree.toInt();
+    tarDegreeMotor1 = str_stpMoto1Degree.toInt();
   }
 }

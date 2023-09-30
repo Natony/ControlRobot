@@ -37,10 +37,10 @@ namespace gUI_Control_Robot
             step_J2.Text = "9";
             step_J3.Text = "9";
 
-            label_Base.Text = "0";
-            label_J1.Text = "0";
-            label_J2.Text = "0";
-            label_J3.Text = "0";
+            label_Base.Text = degree1.ToString();
+            label_J1.Text = degree2.ToString();
+            label_J2.Text = degree3.ToString();
+            label_J3.Text = degree4.ToString();
 
             label_X.Text = "100";
             label_Y.Text = "100";
@@ -48,10 +48,10 @@ namespace gUI_Control_Robot
         }
         private void update_ProgreesBar()
         {
-            progressBar_Base.Value = 0;
-            progressBar_J1.Value = 0;
-            progressBar_J2.Value = 0;
-            progressBar_J3.Value = 0;
+            progressBar_Base.Value = degree1;
+            progressBar_J1.Value = degree1;
+            progressBar_J2.Value = degree1;
+            progressBar_J3.Value = degree1;
         }
         private void updateNewProgressBar()
         {
@@ -95,16 +95,17 @@ namespace gUI_Control_Robot
 
                 btn_run_program.Enabled = false;
 
+                degree1 = degree2 = degree3 = degree4 = 0;
                 update_Label();
 
                 update_ProgreesBar();
 
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(0 + "A" + "\n");
-                    serialPort1.Write(0 + "B" + "\n");
-                    serialPort1.Write(0 + "C" + "\n");
-                    serialPort1.Write(0 + "D" + "\n");
+                    serialPort1.Write(degree1 + "A" + "\n");
+                    serialPort1.Write(degree2 + "B" + "\n");
+                    serialPort1.Write(degree3 + "C" + "\n");
+                    serialPort1.Write(degree4 + "D" + "\n");
                     serialPort1.Write(100 + "E" + "\n");
                     serialPort1.Write(100 + "F" + "\n");
                     serialPort1.Write(100 + "G" + "\n");
@@ -122,12 +123,14 @@ namespace gUI_Control_Robot
             {
                 if(serialPort1.IsOpen)
                 {
+                    degree1 = degree2 = degree3 = degree4 = 0;
+
                     if (!checkBox_simultaneous.Checked)
                     {
-                        serialPort1.Write(0 + "A" + "\n");
-                        serialPort1.Write(0 + "B" + "\n");
-                        serialPort1.Write(0 + "C" + "\n");
-                        serialPort1.Write(0 + "D" + "\n");
+                        serialPort1.Write(degree1 + "A" + "\n");
+                        serialPort1.Write(degree2 + "B" + "\n");
+                        serialPort1.Write(degree3 + "C" + "\n");
+                        serialPort1.Write(degree4 + "D" + "\n");
                         serialPort1.Write(100 + "E" + "\n");
                         serialPort1.Write(100 + "F" + "\n");
                         serialPort1.Write(100 + "G" + "\n");
