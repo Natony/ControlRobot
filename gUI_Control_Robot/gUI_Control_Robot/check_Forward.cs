@@ -8,7 +8,7 @@ namespace gUI_Control_Robot
 {
     class check_Forward
     {
-        public static char CheckForward(double x, double y, double z, int t1, int t2, int t3, int t4)
+        public static char CheckForward(double x, double y, double z, double t1, double t2, double t3, double t4)
         {
             double[,] A1 = {
             { Math.Cos(Math.PI * t1 / 180.0), 0, -Math.Sin(Math.PI * t1 / 180.0), 150 * Math.Cos(Math.PI * t1 / 180.0) },
@@ -42,11 +42,11 @@ namespace gUI_Control_Robot
 
             if (Math.Round(x) == Math.Round(T[0, 3]) && Math.Round(y) == Math.Round(T[1, 3]) && Math.Round(z) == Math.Round(T[2, 3]))
             {
-                return 'D';
+                return 'C';
             }
             else
             {
-                return 'S';
+                return 'U';
             }
         }
 

@@ -11,21 +11,33 @@ using System.IO.Ports;
 
 namespace gUI_Control_Robot
 {
-    public partial class Form1 : Form
+    public partial class MainWindows : Form
     {
         private int degree1;
         private int degree2;
         private int degree3;
         private int degree4;
+        private double t1;
+        private double t2;
+        private double t3;
+        private double t4;
         private int x, y, z;
 
-        public Form1()
+        public double XValue { get { return Convert.ToDouble(txtBox_X.Text); } }
+        public double YValue { get { return Convert.ToDouble(txtBox_Y.Text); } }
+        public double ZValue { get { return Convert.ToDouble(txtBox_Z.Text); } }
+
+        public MainWindows()
         {
             InitializeComponent();
             degree1 = 0;
             degree2 = 0;
             degree3 = 0;
             degree4 = 0;
+            t1 = 0;
+            t2 = 0;
+            t3 = 0;
+            t4 = 0;
             x = 100;
             y = 100;
             z = 100;
@@ -62,13 +74,13 @@ namespace gUI_Control_Robot
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            groupBox_Forward.Enabled = false;
+            /*groupBox_Forward.Enabled = false;
             groupBox_Inverse.Enabled = false;
             groupBox_gripper.Enabled = false;
             btn_save_position.Enabled = false;
             btn_stop_program.Enabled = false;
 
-            btn_run_program.Enabled = true;
+            btn_run_program.Enabled = true;*/
         }
 
         private void comboBox_portList_DropDown(object sender, EventArgs e)
@@ -523,35 +535,6 @@ namespace gUI_Control_Robot
             }
         }
 
-        private void btn_Move_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if(txtBox_X != null && txtBox_Y != null && txtBox_Z != null)
-                {
-                    int x = Convert.ToInt32(txtBox_X.Text);
-                    int y = Convert.ToInt32(txtBox_Y.Text);
-                    int z = Convert.ToInt32(txtBox_Z.Text);
-
-                    label_X.Text = txtBox_X.Text;
-                    label_Y.Text = txtBox_Y.Text;
-                    label_Z.Text = txtBox_Z.Text;
-
-                    if (!checkBox_simultaneous.Checked)
-                    {
-                        serialPort1.Write(x + "E" + "\n");
-                        serialPort1.Write(y + "F" + "\n");
-                        serialPort1.Write(z + "G" + "\n");
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-
-        }
-
         private void btn_close_gripper_Click(object sender, EventArgs e)
         {
             if (serialPort1.IsOpen)
@@ -560,6 +543,22 @@ namespace gUI_Control_Robot
                 {
                     serialPort1.Write(0 + "H" + "\n");
                 }
+            }
+        }
+
+        private void btn_Calculate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Create an instance of the calculateWindows form and pass the current mainForm as a parameter
+                calculateWindows calculateForm = new calculateWindows(this);
+
+                // Show the calculateWindows form
+                calculateForm.Show();
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show(error.Message);
             }
         }
 

@@ -47,18 +47,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="check_Forward.cs" />
-    <Compile Include="inverse_Kinematics.cs" />
-    <Compile Include="forward_Kinematics.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="calculateWindows.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="calculateWindows.Designer.cs">
+      <DependentUpon>calculateWindows.cs</DependentUpon>
+    </Compile>
+    <Compile Include="inverse_Kinematics.cs" />
+    <Compile Include="forward_Kinematics.cs" />
+    <Compile Include="MainWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindows.Designer.cs">
+      <DependentUpon>MainWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="calculateWindows.resx">
+      <DependentUpon>calculateWindows.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindows.resx">
+      <DependentUpon>MainWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

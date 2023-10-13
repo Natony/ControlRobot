@@ -1,7 +1,7 @@
 ﻿
 namespace gUI_Control_Robot
 {
-    partial class Form1
+    partial class MainWindows
     {
         /// <summary>
         /// Required designer variable.
@@ -36,7 +36,6 @@ namespace gUI_Control_Robot
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.btn_Move = new System.Windows.Forms.Button();
             this.btn_close_gripper = new System.Windows.Forms.Button();
             this.btn_open_gripper = new System.Windows.Forms.Button();
             this.btn_save_position = new System.Windows.Forms.Button();
@@ -70,6 +69,7 @@ namespace gUI_Control_Robot
             this.btn_plus_Base = new System.Windows.Forms.Button();
             this.progressBar_Base = new System.Windows.Forms.ProgressBar();
             this.groupBox_Inverse = new System.Windows.Forms.GroupBox();
+            this.btn_Calculate = new System.Windows.Forms.Button();
             this.label_Z = new System.Windows.Forms.Label();
             this.label_Y = new System.Windows.Forms.Label();
             this.label_X = new System.Windows.Forms.Label();
@@ -134,16 +134,6 @@ namespace gUI_Control_Robot
             this.label8.Size = new System.Drawing.Size(27, 20);
             this.label8.TabIndex = 34;
             this.label8.Text = "Z :";
-            // 
-            // btn_Move
-            // 
-            this.btn_Move.Location = new System.Drawing.Point(133, 112);
-            this.btn_Move.Name = "btn_Move";
-            this.btn_Move.Size = new System.Drawing.Size(180, 55);
-            this.btn_Move.TabIndex = 39;
-            this.btn_Move.Text = "MOVE TO POSITION";
-            this.btn_Move.UseVisualStyleBackColor = true;
-            this.btn_Move.Click += new System.EventHandler(this.btn_Move_Click);
             // 
             // btn_close_gripper
             // 
@@ -458,6 +448,7 @@ namespace gUI_Control_Robot
             // 
             // groupBox_Inverse
             // 
+            this.groupBox_Inverse.Controls.Add(this.btn_Calculate);
             this.groupBox_Inverse.Controls.Add(this.label_Z);
             this.groupBox_Inverse.Controls.Add(this.label_Y);
             this.groupBox_Inverse.Controls.Add(this.label_X);
@@ -467,13 +458,22 @@ namespace gUI_Control_Robot
             this.groupBox_Inverse.Controls.Add(this.label6);
             this.groupBox_Inverse.Controls.Add(this.label7);
             this.groupBox_Inverse.Controls.Add(this.label8);
-            this.groupBox_Inverse.Controls.Add(this.btn_Move);
             this.groupBox_Inverse.Location = new System.Drawing.Point(732, 76);
             this.groupBox_Inverse.Name = "groupBox_Inverse";
             this.groupBox_Inverse.Size = new System.Drawing.Size(423, 174);
             this.groupBox_Inverse.TabIndex = 48;
             this.groupBox_Inverse.TabStop = false;
             this.groupBox_Inverse.Text = "INVERSE KINEMATICS";
+            // 
+            // btn_Calculate
+            // 
+            this.btn_Calculate.Location = new System.Drawing.Point(126, 110);
+            this.btn_Calculate.Name = "btn_Calculate";
+            this.btn_Calculate.Size = new System.Drawing.Size(180, 55);
+            this.btn_Calculate.TabIndex = 43;
+            this.btn_Calculate.Text = "Calculate";
+            this.btn_Calculate.UseVisualStyleBackColor = true;
+            this.btn_Calculate.Click += new System.EventHandler(this.btn_Calculate_Click);
             // 
             // label_Z
             // 
@@ -586,7 +586,7 @@ namespace gUI_Control_Robot
             this.btn_stop_program.UseVisualStyleBackColor = true;
             this.btn_stop_program.Click += new System.EventHandler(this.btn_stop_program_Click);
             // 
-            // Form1
+            // MainWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -599,7 +599,7 @@ namespace gUI_Control_Robot
             this.Controls.Add(this.label11);
             this.Controls.Add(this.btn_run_program);
             this.Controls.Add(this.btn_save_position);
-            this.Name = "Form1";
+            this.Name = "MainWindows";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -622,7 +622,6 @@ namespace gUI_Control_Robot
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button btn_Move;
         private System.Windows.Forms.Button btn_close_gripper;
         private System.Windows.Forms.Button btn_open_gripper;
         private System.Windows.Forms.Button btn_save_position;
@@ -667,6 +666,7 @@ namespace gUI_Control_Robot
         private System.Windows.Forms.Label label_Z;
         private System.Windows.Forms.Label label_Y;
         private System.Windows.Forms.Label label_X;
+        private System.Windows.Forms.Button btn_Calculate;
     }
 }
 
