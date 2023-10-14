@@ -38,7 +38,6 @@ namespace gUI_Control_Robot
             this.label8 = new System.Windows.Forms.Label();
             this.btn_close_gripper = new System.Windows.Forms.Button();
             this.btn_open_gripper = new System.Windows.Forms.Button();
-            this.btn_save_position = new System.Windows.Forms.Button();
             this.btn_run_program = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox_Forward = new System.Windows.Forms.GroupBox();
@@ -154,15 +153,6 @@ namespace gUI_Control_Robot
             this.btn_open_gripper.Text = "OPEN";
             this.btn_open_gripper.UseVisualStyleBackColor = true;
             this.btn_open_gripper.Click += new System.EventHandler(this.btn_open_gripper_Click);
-            // 
-            // btn_save_position
-            // 
-            this.btn_save_position.Location = new System.Drawing.Point(1025, 297);
-            this.btn_save_position.Name = "btn_save_position";
-            this.btn_save_position.Size = new System.Drawing.Size(130, 77);
-            this.btn_save_position.TabIndex = 44;
-            this.btn_save_position.Text = "SAVE POSITION";
-            this.btn_save_position.UseVisualStyleBackColor = true;
             // 
             // btn_run_program
             // 
@@ -471,7 +461,7 @@ namespace gUI_Control_Robot
             this.btn_Calculate.Name = "btn_Calculate";
             this.btn_Calculate.Size = new System.Drawing.Size(180, 55);
             this.btn_Calculate.TabIndex = 43;
-            this.btn_Calculate.Text = "Calculate";
+            this.btn_Calculate.Text = "CALCULATE";
             this.btn_Calculate.UseVisualStyleBackColor = true;
             this.btn_Calculate.Click += new System.EventHandler(this.btn_Calculate_Click);
             // 
@@ -598,7 +588,6 @@ namespace gUI_Control_Robot
             this.Controls.Add(this.groupBox_Forward);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.btn_run_program);
-            this.Controls.Add(this.btn_save_position);
             this.Name = "MainWindows";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -624,7 +613,6 @@ namespace gUI_Control_Robot
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btn_close_gripper;
         private System.Windows.Forms.Button btn_open_gripper;
-        private System.Windows.Forms.Button btn_save_position;
         private System.Windows.Forms.Button btn_run_program;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox_Forward;

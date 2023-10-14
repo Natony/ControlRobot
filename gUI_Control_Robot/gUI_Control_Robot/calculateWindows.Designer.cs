@@ -308,6 +308,7 @@ namespace gUI_Control_Robot
             this.btn_Move1.TabIndex = 40;
             this.btn_Move1.Text = "MOVE TO POSITION";
             this.btn_Move1.UseVisualStyleBackColor = true;
+            this.btn_Move1.Click += new System.EventHandler(this.btn_Move1_Click);
             // 
             // label_S3T4
             // 
@@ -326,6 +327,7 @@ namespace gUI_Control_Robot
             this.btn_Move2.TabIndex = 41;
             this.btn_Move2.Text = "MOVE TO POSITION";
             this.btn_Move2.UseVisualStyleBackColor = true;
+            this.btn_Move2.Click += new System.EventHandler(this.btn_Move2_Click);
             // 
             // label_S3T2
             // 
@@ -344,6 +346,7 @@ namespace gUI_Control_Robot
             this.btn_Move3.TabIndex = 42;
             this.btn_Move3.Text = "MOVE TO POSITION";
             this.btn_Move3.UseVisualStyleBackColor = true;
+            this.btn_Move3.Click += new System.EventHandler(this.btn_Move3_Click);
             // 
             // label_S4T1
             // 
@@ -362,6 +365,7 @@ namespace gUI_Control_Robot
             this.btn_Move4.TabIndex = 43;
             this.btn_Move4.Text = "MOVE TO POSITION";
             this.btn_Move4.UseVisualStyleBackColor = true;
+            this.btn_Move4.Click += new System.EventHandler(this.btn_Move4_Click);
             // 
             // tableLayoutPanel1
             // 

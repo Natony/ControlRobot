@@ -17,16 +17,15 @@ namespace gUI_Control_Robot
         private int degree2;
         private int degree3;
         private int degree4;
-        private double t1;
-        private double t2;
-        private double t3;
-        private double t4;
         private int x, y, z;
-
+        private int t1;
+        private int t2;
+        private int t3;
+        private int t4;
         public double XValue { get { return Convert.ToDouble(txtBox_X.Text); } }
         public double YValue { get { return Convert.ToDouble(txtBox_Y.Text); } }
         public double ZValue { get { return Convert.ToDouble(txtBox_Z.Text); } }
-
+        
         public MainWindows()
         {
             InitializeComponent();
@@ -34,25 +33,22 @@ namespace gUI_Control_Robot
             degree2 = 0;
             degree3 = 0;
             degree4 = 0;
-            t1 = 0;
-            t2 = 0;
-            t3 = 0;
-            t4 = 0;
             x = 100;
             y = 100;
             z = 100;
         }
-        private void update_Label()
+//----------------------------------------------------------------------------------------------------------------------------------
+        private void update_indexLabel()
         {
             step_Base.Text = "9";
             step_J1.Text = "9";
             step_J2.Text = "9";
             step_J3.Text = "9";
 
-            label_Base.Text = degree1.ToString();
-            label_J1.Text = degree2.ToString();
-            label_J2.Text = degree3.ToString();
-            label_J3.Text = degree4.ToString();
+            label_Base.Text = "0";
+            label_J1.Text = "0";
+            label_J2.Text = "0";
+            label_J3.Text = "0";
 
             label_X.Text = "100";
             label_Y.Text = "100";
@@ -65,13 +61,28 @@ namespace gUI_Control_Robot
             progressBar_J2.Value = degree1;
             progressBar_J3.Value = degree1;
         }
-        private void updateNewProgressBar()
+        private void update_Label()
         {
-            progressBar_Base.Value = degree1;
-            progressBar_J1.Value = degree2;
-            progressBar_J2.Value = degree3;
-            progressBar_J3.Value = degree4;
+            label_Base.Text = degree1.ToString();
+            label_J1.Text = degree2.ToString();
+            label_J2.Text = degree3.ToString();
+            label_J3.Text = degree4.ToString();
         }
+        public void UpdateAngles(int t1, int t2, int t3, int t4)
+        {
+            this.t1 = t1;
+            this.t2 = t2;
+            this.t3 = t3;
+            this.t4 = t4;
+
+            degree1 = t1;
+            degree2 = t2;
+            degree3 = t3;
+            degree4 = t4;
+            update_ProgreesBar();
+            update_Label();
+        }
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
             /*groupBox_Forward.Enabled = false;
@@ -82,7 +93,6 @@ namespace gUI_Control_Robot
 
             btn_run_program.Enabled = true;*/
         }
-
         private void comboBox_portList_DropDown(object sender, EventArgs e)
         {
             string[] portlists = SerialPort.GetPortNames();
@@ -102,13 +112,12 @@ namespace gUI_Control_Robot
                 groupBox_Forward.Enabled = true;
                 groupBox_Inverse.Enabled = true;
                 groupBox_gripper.Enabled = true;
-                btn_save_position.Enabled = true;
                 btn_stop_program.Enabled = true;
 
                 btn_run_program.Enabled = false;
 
                 degree1 = degree2 = degree3 = degree4 = 0;
-                update_Label();
+                update_indexLabel();
 
                 update_ProgreesBar();
 
@@ -153,7 +162,6 @@ namespace gUI_Control_Robot
                     groupBox_Forward.Enabled = false;
                     groupBox_Inverse.Enabled = false;
                     groupBox_gripper.Enabled = false;
-                    btn_save_position.Enabled = false;
                     btn_stop_program.Enabled = false;
 
                     btn_run_program.Enabled = true;
@@ -162,7 +170,7 @@ namespace gUI_Control_Robot
                     // progessBar
                     update_ProgreesBar();
                     //label
-                    update_Label();
+                    update_indexLabel();
                 }
             }
             catch (Exception error)
@@ -550,11 +558,20 @@ namespace gUI_Control_Robot
         {
             try
             {
-                // Create an instance of the calculateWindows form and pass the current mainForm as a parameter
                 calculateWindows calculateForm = new calculateWindows(this);
 
-                // Show the calculateWindows form
                 calculateForm.Show();
+                label_X.Text = txtBox_X.Text;
+                label_Y.Text = txtBox_Y.Text;
+                label_Z.Text = txtBox_Z.Text;
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Write(degree1 + "A" + "\n");
+                    serialPort1.Write(degree2 + "B" + "\n");
+                    serialPort1.Write(degree3 + "C" + "\n");
+                    serialPort1.Write(degree4 + "D" + "\n");
+                }
+                
             }
             catch(Exception error)
             {
@@ -579,7 +596,7 @@ namespace gUI_Control_Robot
             {
                 if (checkBox_simultaneous.Checked)
                 {
-                    updateNewProgressBar();
+                    update_ProgreesBar();
 
                     double newX, newY, newZ;
                     forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
