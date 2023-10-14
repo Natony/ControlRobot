@@ -85,13 +85,12 @@ namespace gUI_Control_Robot
         //------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*groupBox_Forward.Enabled = false;
+            groupBox_Forward.Enabled = false;
             groupBox_Inverse.Enabled = false;
             groupBox_gripper.Enabled = false;
-            btn_save_position.Enabled = false;
             btn_stop_program.Enabled = false;
 
-            btn_run_program.Enabled = true;*/
+            btn_run_program.Enabled = true;
         }
         private void comboBox_portList_DropDown(object sender, EventArgs e)
         {
