@@ -54,6 +54,39 @@ namespace gUI_Control_Robot
             label_Y.Text = "100";
             label_Z.Text = "100";
         }
+        //--------------------------------------------------------------------------------------------------------------------------------------------
+        private void UpdateProgressBarAndLabel(ProgressBar progressBar, Label label, int value, int min, int max, char motorCode)
+        {
+            progressBar.Minimum = min;
+            progressBar.Maximum = max;
+            progressBar.Value = value;
+            label.Text = value.ToString();
+
+            if (serialPort1.IsOpen && !checkBox_simultaneous.Checked)
+            {
+                serialPort1.Write(value + motorCode + "\n");
+            }
+        }
+
+        private void UpdateDegreeAndForwardKinematics(int step, ProgressBar progressBar, Label label, int degree, ref int targetDegree, int min, int max, char motorCode)
+        {
+            targetDegree += step;
+            if (targetDegree > max) targetDegree = max;
+            if (targetDegree < min) targetDegree = min;
+
+            double newX, newY, newZ;
+            forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
+
+            newX = Math.Round(newX, 2);
+            newY = Math.Round(newY, 2);
+            newZ = Math.Round(newZ, 2);
+
+            label_X.Text = newX.ToString();
+            label_Y.Text = newY.ToString();
+            label_Z.Text = newZ.ToString();
+
+            UpdateProgressBarAndLabel(progressBar, label, targetDegree, min, max, motorCode);
+        }
         private void update_ProgreesBar()
         {
             progressBar_Base.Value = degree1;
@@ -85,12 +118,12 @@ namespace gUI_Control_Robot
         //------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
-            groupBox_Forward.Enabled = false;
-            groupBox_Inverse.Enabled = false;
-            groupBox_gripper.Enabled = false;
-            btn_stop_program.Enabled = false;
+            //groupBox_Forward.Enabled = false;
+            //groupBox_Inverse.Enabled = false;
+            //groupBox_gripper.Enabled = false;
+            //btn_stop_program.Enabled = false;
 
-            btn_run_program.Enabled = true;
+            //btn_run_program.Enabled = true;
         }
         private void comboBox_portList_DropDown(object sender, EventArgs e)
         {
@@ -126,9 +159,6 @@ namespace gUI_Control_Robot
                     serialPort1.Write(degree2 + "B" + "\n");
                     serialPort1.Write(degree3 + "C" + "\n");
                     serialPort1.Write(degree4 + "D" + "\n");
-                    serialPort1.Write(100 + "E" + "\n");
-                    serialPort1.Write(100 + "F" + "\n");
-                    serialPort1.Write(100 + "G" + "\n");
                 }
             }
             catch(Exception error)
@@ -151,9 +181,6 @@ namespace gUI_Control_Robot
                         serialPort1.Write(degree2 + "B" + "\n");
                         serialPort1.Write(degree3 + "C" + "\n");
                         serialPort1.Write(degree4 + "D" + "\n");
-                        serialPort1.Write(100 + "E" + "\n");
-                        serialPort1.Write(100 + "F" + "\n");
-                        serialPort1.Write(100 + "G" + "\n");
                     }
                     serialPort1.Close();
 
@@ -199,37 +226,8 @@ namespace gUI_Control_Robot
             {
                 if (step_Base.Text != null)
                 {
-                    int i = Convert.ToInt32(step_Base.Text);
-                    progressBar_Base.Minimum = 0;
-                    progressBar_Base.Maximum = 180;
-                    degree1 += i;
-
-                    if (degree1 >= progressBar_Base.Maximum) degree1 = progressBar_Base.Maximum;
-                    if (degree1 <= progressBar_Base.Minimum) degree1 = progressBar_Base.Minimum;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //cập nhật giao diện
-                    label_Base.Text = degree1.ToString();
-                    progressBar_Base.Value = degree1;
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree1 + "A" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_Base.Text);
+                    UpdateDegreeAndForwardKinematics(step, progressBar_Base, label_Base, degree1, ref degree1, 0, 180, 'A');
                 }
             }
             catch (Exception error)
@@ -246,35 +244,8 @@ namespace gUI_Control_Robot
             {
                 if (step_Base.Text != null)
                 {
-                    int i = Convert.ToInt32(step_Base.Text);
-                    progressBar_Base.Minimum = 0;
-                    progressBar_Base.Maximum = 180;
-                    degree1 -= i;
-                    if (degree1 >= progressBar_Base.Maximum) degree1 = progressBar_Base.Maximum;
-                    if (degree1 <= progressBar_Base.Minimum) degree1 = progressBar_Base.Minimum;
-
-                    label_Base.Text = degree1.ToString();
-                    progressBar_Base.Value = degree1;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree1 + "A" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_Base.Text);
+                    UpdateDegreeAndForwardKinematics(step, progressBar_Base, label_Base, degree1, ref degree1, 0, 180, 'A');
                 }
             }
             catch (Exception error)
@@ -289,35 +260,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J1 != null)
                 {
-                    int i = Convert.ToInt32(step_J1.Text);
-                    progressBar_J1.Minimum = 0;
-                    progressBar_J1.Maximum = 180;
-                    degree2 += i;
-                    if (degree2 >= progressBar_J1.Maximum) degree2 = progressBar_J1.Maximum;
-                    if (degree2 <= progressBar_J1.Minimum) degree2 = progressBar_J1.Minimum;
-
-                    label_J1.Text = degree2.ToString();
-                    progressBar_J1.Value = degree2;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree2 + "B" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J1.Text);
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J1, label_J1, degree2, ref degree2, 0, 180, 'B');
                 }
             }
             catch (Exception error)
@@ -333,35 +277,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J1 != null)
                 {
-                    int i = Convert.ToInt32(step_J1.Text);
-                    progressBar_J1.Minimum = 0;
-                    progressBar_J1.Maximum = 180;
-                    degree2 -= i;
-                    if (degree2 >= progressBar_J1.Maximum) degree2 = progressBar_J1.Maximum;
-                    if (degree2 <= progressBar_J1.Minimum) degree2 = progressBar_J1.Minimum;
-
-                    label_J1.Text = degree2.ToString();
-                    progressBar_J1.Value = degree2;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree2 + "B" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J1.Text);
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J1, label_J1, degree2, ref degree2, 0, 180, 'B');
                 }
             }
             catch (Exception error)
@@ -376,35 +293,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J2 != null)
                 {
-                    int i = Convert.ToInt32(step_J2.Text);
-                    progressBar_J2.Minimum = 0;
-                    progressBar_J2.Maximum = 180;
-                    degree3 += i;
-                    if (degree3 >= progressBar_J2.Maximum) degree3 = progressBar_J2.Maximum;
-                    if (degree3 <= progressBar_J2.Minimum) degree3 = progressBar_J2.Minimum;
-
-                    label_J2.Text = degree3.ToString();
-                    progressBar_J2.Value = degree3;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree3 + "C" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J2.Text);
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2, label_J2, degree2, ref degree3, 0, 180, 'C');
                 }
             }
             catch (Exception error)
@@ -419,35 +309,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J2 != null)
                 {
-                    int i = Convert.ToInt32(step_J2.Text);
-                    progressBar_J2.Minimum = 0;
-                    progressBar_J2.Maximum = 180;
-                    degree3 -= i;
-                    if (degree3 >= progressBar_J2.Maximum) degree3 = progressBar_J2.Maximum;
-                    if (degree3 <= progressBar_J2.Minimum) degree3 = progressBar_J2.Minimum;
-
-                    label_J2.Text = degree3.ToString();
-                    progressBar_J2.Value = degree3;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree3 + "C" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J2.Text);
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2, label_J2, degree2, ref degree3, 0, 180, 'C');
                 }
             }
             catch (Exception error)
@@ -462,35 +325,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J3 != null)
                 {
-                    int i = Convert.ToInt32(step_J3.Text);
-                    progressBar_J3.Minimum = 0;
-                    progressBar_J3.Maximum = 180;
-                    degree4 += i;
-                    if (degree4 >= progressBar_J3.Maximum) degree4 = progressBar_J3.Maximum;
-                    if (degree4 <= progressBar_J3.Minimum) degree4 = progressBar_J3.Minimum;
-
-                    label_J3.Text = degree4.ToString();
-                    progressBar_J3.Value = degree4;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree4 + "D" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J3.Text);
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3, label_J3, degree4, ref degree4, 0, 180, 'D');
                 }
             }
             catch (Exception error)
@@ -505,35 +341,8 @@ namespace gUI_Control_Robot
             {
                 if (step_J3 != null)
                 {
-                    int i = Convert.ToInt32(step_J3.Text);
-                    progressBar_J3.Minimum = 0;
-                    progressBar_J3.Maximum = 180;
-                    degree4 -= i;
-                    if (degree4 >= progressBar_J3.Maximum) degree4 = progressBar_J3.Maximum;
-                    if (degree4 <= progressBar_J3.Minimum) degree4 = progressBar_J3.Minimum;
-
-                    label_J3.Text = degree4.ToString();
-                    progressBar_J3.Value = degree4;
-
-                    // tính lại x, y, z sử dụng forward kinematics
-                    double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
-
-                    //Hiển thị x, y, z 
-                    label_X.Text = newX.ToString();
-                    label_Y.Text = newY.ToString();
-                    label_Z.Text = newZ.ToString();
-
-                    if (serialPort1.IsOpen)
-                    {
-                        if (!checkBox_simultaneous.Checked)
-                        {
-                            serialPort1.Write(degree4 + "D" + "\n");
-                            serialPort1.Write(newX + "E" + "\n");
-                            serialPort1.Write(newY + "F" + "\n");
-                            serialPort1.Write(newZ + "G" + "\n");
-                        }
-                    }
+                    int step = Convert.ToInt32(step_J3.Text);
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3, label_J3, degree4, ref degree4, 0, 180, 'D');
                 }
             }
             catch (Exception error)

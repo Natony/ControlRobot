@@ -15,38 +15,47 @@ namespace gUI_Control_Robot
             double t2 = degree2 * Math.PI / 180.0;
             double t3 = degree3 * Math.PI / 180.0;
             double t4 = degree4 * Math.PI / 180.0;
+            double l1, l2, l3, l4;
+            l1 = 1; l2 = 2; l3 = 3; l4 = 4;
 
             // Các ma trận biến đổi A1, A2, A3, A4
             double[,] A1 = {
-            { Math.Cos(t1), 0, -Math.Sin(t1), 150 * Math.Cos(t1) },
-            { Math.Sin(t1), 0, Math.Cos(t1), 150 * Math.Sin(t1) },
-            { 0, -1, 0, 160 },
-            { 0, 0, 0, 1 }
-        };
-
-            double[,] A2 = {
-            { Math.Cos(t2), -Math.Sin(t2), 0, 350 * Math.Cos(t2) },
-            { Math.Sin(t2), Math.Cos(t2), 0, 350 * Math.Sin(t2) },
+            { Math.Cos(t1), -Math.Sin(t1), 0, 0 },
+            { Math.Sin(t1), Math.Cos(t1), 0, 0 },
             { 0, 0, 1, 0 },
             { 0, 0, 0, 1 }
         };
 
+            double[,] A2 = {
+            { Math.Cos(t2), -Math.Sin(t2), 0, l1},
+            { 0, 0, 1, 0 },
+            { -Math.Sin(t2), -Math.Cos(t2), 0, 0 },
+            { 0, 0, 0, 1 }
+        };
+
             double[,] A3 = {
-            { Math.Cos(t3), -Math.Sin(t3), 0, 362.5 * Math.Cos(t3) },
-            { Math.Sin(t3), Math.Cos(t3), 0, 362.5 * Math.Sin(t3) },
+            { Math.Cos(t3), -Math.Sin(t3), 0, l2 },
+            { Math.Sin(t3), Math.Cos(t3), 0, 0 },
             { 0, 0, 1, 0 },
             { 0, 0, 0, 1 }
         };
 
             double[,] A4 = {
-            { Math.Cos(t4), -Math.Sin(t4), 0, 230 * Math.Cos(t4) },
-            { Math.Sin(t4), Math.Cos(t4), 0, 230 * Math.Sin(t4) },
+            { Math.Cos(t4), -Math.Sin(t4), 0, l3 },
+            { Math.Sin(t4), Math.Cos(t4), 0, 0 },
+            { 0, 0, 1, 0 },
+            { 0, 0, 0, 1 }
+        };
+
+            double[,] A5 = {
+            { 1, 0, 0, l4 },
+            { 0, 1, 0, 0 },
             { 0, 0, 1, 0 },
             { 0, 0, 0, 1 }
         };
 
             // Tích các ma trận biến đổi
-            double[,] T = MatrixMultiply(MatrixMultiply(MatrixMultiply(A1, A2), A3), A4);
+            double[,] T = MatrixMultiply(MatrixMultiply(MatrixMultiply(MatrixMultiply(A1, A2), A3), A4), A5);
 
             // Lấy giá trị x, y, z từ ma trận T
             x = T[0, 3];
