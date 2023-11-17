@@ -13,29 +13,21 @@ namespace gUI_Control_Robot
     public partial class calculateWindows : Form
     {
         private MainWindows mainForm;
-
-        public int t1 { private set; get; }
-        public int t2 { private set; get; }
-        public int t3 { private set; get; }
-        public int t4 { private set; get; }
+        private int t1Cal, t2Cal, t3Cal, t4Cal;
 
         private void SetAngle(Label the1, Label the2, Label the3, Label the4)
         {
-            double tempT1 = Convert.ToDouble(the1.Text);
-            double tempT2 = Convert.ToDouble(the2.Text);
-            double tempT3 = Convert.ToDouble(the3.Text);
-            double tempT4 = Convert.ToDouble(the4.Text);
-            t1 = (int)tempT1;
-            t2 = (int)tempT2;
-            t3 = (int)tempT3;
-            t4 = (int)tempT4;
+            t1Cal = Convert.ToInt32(Convert.ToDouble(the1.Text));
+            t2Cal = Convert.ToInt32(Convert.ToDouble(the2.Text));
+            t3Cal = Convert.ToInt32(Convert.ToDouble(the3.Text));
+            t4Cal = Convert.ToInt32(Convert.ToDouble(the4.Text));
+
         }
         public calculateWindows(MainWindows mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
         }
-
         private void calculateWindows_Load(object sender, EventArgs e)
         {
             try
@@ -89,25 +81,25 @@ namespace gUI_Control_Robot
         private void btn_Move1_Click(object sender, EventArgs e)
         {
             SetAngle(label_S1T1, label_S1T2, label_S1T3, label_S1T4);
-            mainForm.UpdateAngles(t1, t2, t3, t4);
+            mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
         }
 
         private void btn_Move2_Click(object sender, EventArgs e)
         {
             SetAngle(label_S2T1, label_S2T2, label_S2T3, label_S2T4);
-            mainForm.UpdateAngles(t1, t2, t3, t4);
+            mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
         }
 
         private void btn_Move3_Click(object sender, EventArgs e)
         {
             SetAngle(label_S3T1, label_S3T2, label_S3T3, label_S3T4);
-            mainForm.UpdateAngles(t1, t2, t3, t4);
+            mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
         }
 
         private void btn_Move4_Click(object sender, EventArgs e)
         {
             SetAngle(label_S4T1, label_S4T2, label_S4T3, label_S4T4);
-            mainForm.UpdateAngles(t1, t2, t3, t4);
+            mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
         }
     }
 }

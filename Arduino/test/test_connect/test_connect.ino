@@ -82,15 +82,15 @@ void motorStepper1() {
   if (tarDegreeMotor1 != curDegreeMotor1) {
     int diffDegreeMotor1 = tarDegreeMotor1 - curDegreeMotor1;
 
-    stepsMotor1 = diffDegreeMotor1 / 1.8;
+    stepsMotor1 = (diffDegreeMotor1) / 1.8;
     digitalWrite(dir1, stepsMotor1 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor1); i++) {
       lcd.setCursor(0, 1);
       lcd.print(i);
       digitalWrite(step1, HIGH);
-      delayMicroseconds(10000);
+      delayMicroseconds(15000);
       digitalWrite(step1, LOW);
-      delayMicroseconds(10000);
+      delayMicroseconds(15000);
     }
 
     curDegreeMotor1 = tarDegreeMotor1; // Cập nhật góc hiện tại
@@ -107,7 +107,7 @@ void motorStepper2() {
       lcd.setCursor(5, 1);
       lcd.print(i);
       digitalWrite(step2, HIGH);
-      delayMicroseconds(10000);
+      delayMicroseconds(20000);
       digitalWrite(step2, LOW);
       delayMicroseconds(10000);
     }
@@ -115,32 +115,6 @@ void motorStepper2() {
     curDegreeMotor2 = tarDegreeMotor2; // Cập nhật góc hiện tại
   }
 }
-
-void loop() {
-  Receive_Serial_Data();
-  if (c == '\n') {
-    Parse_the_Data();
-    c = 0;
-    dataIn = "";
-  }
-
-  lcd.setCursor(0, 0);
-  lcd.print(tarDegreeMotor1); // Hiển thị góc hiện tại thay vì stpMoto1Degree
-  lcd.setCursor(0, 1);
-  lcd.print(stepsMotor1);
-
-  lcd.setCursor(5, 0);
-  lcd.print(tarDegreeMotor2); // Hiển thị góc hiện tại thay vì stpMoto1Degree
-  lcd.setCursor(5, 1);
-  lcd.print(stepsMotor2);
-  
-//   motorStepper(tarDegreeMotor1, curDegreeMotor1, step1, dir1);
-//   motorStepper(tarDegreeMotor2, curDegreeMotor2, step2, dir2);
-  motorStepper1();
-  motorStepper2();
-//  motorStepper3();
-}
-
 void motorStepper(int tarDegree, int curDegree, int step, int dir)
 {
   if(tarDegree != curDegree){
@@ -159,22 +133,25 @@ void motorStepper(int tarDegree, int curDegree, int step, int dir)
     curDegree = tarDegree;
   }
 }
-void motorStepper3() {
-  if (tarDegreeMotor3 != curDegreeMotor3) {
-    int diffDegreeMotor3 = tarDegreeMotor3 - curDegreeMotor3;
-
-    stepsMotor3 = diffDegreeMotor3 / 1.8;
-    digitalWrite(dir3, stepsMotor3 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
-    lcd.setCursor(0, 9);
-    for (int i = 0; i < abs(stepsMotor3); i++) {
-      digitalWrite(step3, HIGH);
-      delayMicroseconds(1000);
-      digitalWrite(step3, LOW);
-      delayMicroseconds(1000);
-    }
-
-    curDegreeMotor3 = tarDegreeMotor3; // Cập nhật góc hiện tại
+void loop() {
+  Receive_Serial_Data();
+  if (c == '\n') {
+    Parse_the_Data();
+    c = 0;
+    dataIn = "";
   }
+
+  lcd.setCursor(0, 0);
+  lcd.print(tarDegreeMotor1); // Hiển thị góc hiện tại thay vì stpMoto1Degree
+
+  lcd.setCursor(5, 0);
+  lcd.print(tarDegreeMotor2); // Hiển thị góc hiện tại thay vì stpMoto1Degree
+  
+  // motorStepper(tarDegreeMotor1, curDegreeMotor1, step1, dir1);
+  // motorStepper(tarDegreeMotor2, curDegreeMotor2, step2, dir2);
+  motorStepper1();
+  motorStepper2();
+//  motorStepper3();
 }
 
 
