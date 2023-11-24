@@ -18,9 +18,6 @@ namespace gUI_Control_Robot
             InitializeComponent();
             this.mainForm = mainForm;
 
-            // Subscribe to the MotorAnglesChanged event
-            mainForm.MotorAnglesChanged += MainForm_MotorAnglesChanged;
-
             // Initialize ZedGraph controls
             InitializeGraph(graphMotor1, "Motor 1", 1);
             InitializeGraph(graphMotor2, "Motor 2", 2);
@@ -100,12 +97,6 @@ namespace gUI_Control_Robot
             // Update the graph
             graphControl.AxisChange();
             graphControl.Invalidate();
-        }
-
-
-        private void MainForm_MotorAnglesChanged(int degree1, int degree2, int degree3, int degree4)
-        {
-            // Not used in this example, but you can handle angle changes if needed
         }
 
         private void GraphMonitor_Load(object sender, EventArgs e)

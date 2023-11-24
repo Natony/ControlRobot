@@ -1,17 +1,24 @@
 #include <LiquidCrystal_I2C.h>
+#include <ezButton.h>
 
-const int step1 = 2;
-const int dir1 = 5;
+#define stepX 2
+#define dirX 5
 
-const int step2 = 3;
-const int dir2 = 6;
+#define stepY 3
+#define dirY 6
 
-const int step3 = 4;
-const int dir3 = 7;
+#define stepZ 4
+#define dirZ 7
 
-int ena = 8;
+#define stepA 12
+#define dirA 13
+  
+#define ena 8
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-
+ezButton limitSwitchMotor1(9);
+ezButton limitSwitchMotor2(10);
+ezButton limitSwitchMotor3(11);
+ezButton limitSwitchMotor4(A0);
 char c;
 String dataIn;
 int8_t indexOfA, indexOfB, indexOfC, indexOfD;
@@ -25,21 +32,33 @@ int tarDegree = 0, curDegree = 0;
 void setup() {
   Serial.begin(9600);
 
+  // setup lcd
   lcd.init();
   lcd.backlight();
 
+  // setup pin driver
   pinMode(ena, OUTPUT);
 
-  pinMode(step1, OUTPUT);
-  pinMode(dir1, OUTPUT);
+  pinMode(stepX, OUTPUT);
+  pinMode(dirX, OUTPUT);
 
-  pinMode(step2, OUTPUT);
-  pinMode(dir2, OUTPUT);
+  pinMode(stepY, OUTPUT);
+  pinMode(dirY, OUTPUT);
 
-  // pinMode(step3, OUTPUT);
-  // pinMode(dir3, OUTPUT);
+  pinMode(stepZ, OUTPUT);
+  pinMode(dirZ, OUTPUT);
+
+  pinMode(stepA, OUTPUT);
+  pinMode(dirA, OUTPUT);
 
   digitalWrite(ena, LOW);
+  
+  // steup debounce time limit switch
+  limitSwitchMotor1.setDebounceTime(50);
+  limitSwitchMotor2.setDebounceTime(50);
+  limitSwitchMotor3.setDebounceTime(50);
+  limitSwitchMotor4.setDebounceTime(50);
+
 }
 void Receive_Serial_Data() {
   while (Serial.available() > 0) {
@@ -82,15 +101,13 @@ void motorStepper1() {
   if (tarDegreeMotor1 != curDegreeMotor1) {
     int diffDegreeMotor1 = tarDegreeMotor1 - curDegreeMotor1;
 
-    stepsMotor1 = (diffDegreeMotor1) / 1.8;
-    digitalWrite(dir1, stepsMotor1 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    stepsMotor1 = (diffDegreeMotor1) / 0.05625;
+    digitalWrite(dirX, stepsMotor1 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor1); i++) {
-      lcd.setCursor(0, 1);
-      lcd.print(i);
-      digitalWrite(step1, HIGH);
-      delayMicroseconds(15000);
-      digitalWrite(step1, LOW);
-      delayMicroseconds(15000);
+      digitalWrite(stepX, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepX, LOW);
+      delayMicroseconds(1000);
     }
 
     curDegreeMotor1 = tarDegreeMotor1; // Cập nhật góc hiện tại
@@ -101,57 +118,151 @@ void motorStepper2() {
   if (tarDegreeMotor2 != curDegreeMotor2) {
     int diffDegreeMotor2 = tarDegreeMotor2 - curDegreeMotor2;
 
-    stepsMotor2 = diffDegreeMotor2 / 1.8;
-    digitalWrite(dir2, stepsMotor2 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    stepsMotor2 = diffDegreeMotor2 / 0.0375;
+    digitalWrite(dirY, stepsMotor2 > 0 ? HIGH : LOW); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor2); i++) {
-      lcd.setCursor(5, 1);
-      lcd.print(i);
-      digitalWrite(step2, HIGH);
-      delayMicroseconds(20000);
-      digitalWrite(step2, LOW);
-      delayMicroseconds(10000);
+      digitalWrite(stepY, HIGH);
+      delayMicroseconds(3000);
+      digitalWrite(stepY, LOW);
+      delayMicroseconds(3000);
     }
 
     curDegreeMotor2 = tarDegreeMotor2; // Cập nhật góc hiện tại
   }
 }
-void motorStepper(int tarDegree, int curDegree, int step, int dir)
-{
-  if(tarDegree != curDegree){
-    int diffDegree = tarDegree - curDegree;
+void motorStepper3() {
+  if (tarDegreeMotor3 != curDegreeMotor3) {
+    int diffDegreeMotor3 = tarDegreeMotor3 - curDegreeMotor3;
 
-    int stepMotor = diffDegree / 1.8;
-    digitalWrite(dir, stepMotor > 0 ? LOW : HIGH);
-    for (int i = 0; i < abs(stepMotor); i++) {
-      lcd.setCursor(0, 1);
-      lcd.print(i);
-      digitalWrite(step, HIGH);
-      delayMicroseconds(10000);
-      digitalWrite(step, LOW);
-      delayMicroseconds(10000);
+    stepsMotor3 = diffDegreeMotor3 / 0.025;
+    digitalWrite(dirZ, stepsMotor3 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    for (int i = 0; i < abs(stepsMotor3); i++) {
+      digitalWrite(stepZ, HIGH);
+      delayMicroseconds(3000);
+      digitalWrite(stepZ, LOW);
+      delayMicroseconds(3000);
     }
-    curDegree = tarDegree;
+
+    curDegreeMotor3 = tarDegreeMotor3; // Cập nhật góc hiện tại
   }
 }
+void motorStepper4() {
+  if (tarDegreeMotor4 != curDegreeMotor4) {
+    int diffDegreeMotor4 = tarDegreeMotor4 - curDegreeMotor4;
+
+    stepsMotor4 = diffDegreeMotor4 / 0.045;
+    digitalWrite(dirA, stepsMotor4 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    for (int i = 0; i < abs(stepsMotor4); i++) {
+      digitalWrite(stepA, HIGH);
+      delayMicroseconds(2000);
+      digitalWrite(stepA, LOW);
+      delayMicroseconds(2000);
+    }
+
+    curDegreeMotor4 = tarDegreeMotor4; // Cập nhật góc hiện tại
+  }
+}
+
+void setHome(){
+
+  // initialize state 4 variable state for ls
+  int stateLS1 = limitSwitchMotor1.getState();
+  int stateLS2 = limitSwitchMotor2.getState();
+  int stateLS3 = limitSwitchMotor3.getState();
+  int stateLS4 = limitSwitchMotor4.getState();
+
+  if(stateLS1 == LOW && stateLS2 == LOW && stateLS3 == LOW && stateLS4 == LOW){
+    delay(5000);
+    Serial.println("go to Home");
+  }
+  //limit switch 1
+  if(limitSwitchMotor1.isPressed())
+    Serial.println("The limit switch 1: UNTOUCHED -> TOUCHED");
+
+  if(limitSwitchMotor1.isReleased())
+    Serial.println("The limit switch1 : TOUCHED -> UNTOUCHED");
+    
+  if(stateLS1 == HIGH)
+  {    
+    Serial.println("The limit switch1: UNTOUCHED");
+  }
+  else
+  {
+    Serial.println("The limit switch1: TOUCHED");
+  }
+
+  //limit switch 2
+  if(limitSwitchMotor2.isPressed())
+    Serial.println("The limit switch 2: UNTOUCHED -> TOUCHED");
+
+  if(limitSwitchMotor2.isReleased())
+    Serial.println("The limit switch2 : TOUCHED -> UNTOUCHED");
+    
+  if(stateLS2 == HIGH)
+  {    
+    Serial.println("The limit switch2: UNTOUCHED");
+  }
+  else
+  {
+    Serial.println("The limit switch2: TOUCHED");
+  }
+
+  //limit switch 3
+  if(limitSwitchMotor3.isPressed())
+    Serial.println("The limit switch 3: UNTOUCHED -> TOUCHED");
+
+  if(limitSwitchMotor3.isReleased())
+    Serial.println("The limit switch3 : TOUCHED -> UNTOUCHED");
+    
+  if(stateLS3 == HIGH)
+  {    
+    Serial.println("The limit switch3: UNTOUCHED");
+  }
+  else
+  {
+    Serial.println("The limit switch3: TOUCHED");
+  }
+
+  //limit switch 4
+  if(limitSwitchMotor4.isPressed())
+    Serial.println("The limit switch 4: UNTOUCHED -> TOUCHED");
+
+  if(limitSwitchMotor4.isReleased())
+    Serial.println("The limit switch4 : TOUCHED -> UNTOUCHED");
+    
+  if(stateLS4 == HIGH)
+  {    
+    Serial.println("The limit switch4: UNTOUCHED");
+  }
+  else
+  {
+    Serial.println("The limit switch4: TOUCHED");
+  }
+  delay(2000);
+}
 void loop() {
+  //call limit in loop
+
+  limitSwitchMotor1.loop();
+  limitSwitchMotor2.loop();
+  limitSwitchMotor3.loop();
+  limitSwitchMotor4.loop();
+
+  // compare data
   Receive_Serial_Data();
   if (c == '\n') {
     Parse_the_Data();
     c = 0;
     dataIn = "";
   }
-
-  lcd.setCursor(0, 0);
-  lcd.print(tarDegreeMotor1); // Hiển thị góc hiện tại thay vì stpMoto1Degree
-
-  lcd.setCursor(5, 0);
-  lcd.print(tarDegreeMotor2); // Hiển thị góc hiện tại thay vì stpMoto1Degree
   
-  // motorStepper(tarDegreeMotor1, curDegreeMotor1, step1, dir1);
-  // motorStepper(tarDegreeMotor2, curDegreeMotor2, step2, dir2);
+  // call funtion motor
   motorStepper1();
   motorStepper2();
-//  motorStepper3();
+  motorStepper3();
+  motorStepper4();
+  setHome();
 }
+
 
 

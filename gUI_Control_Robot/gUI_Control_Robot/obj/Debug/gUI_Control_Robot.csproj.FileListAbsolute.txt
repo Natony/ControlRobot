@@ -25,3 +25,4 @@ C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\z
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\zh-tw\ZedGraph.resources.dll
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.GraphMonitor.resources
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.CopyComplete
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.AssemblyReference.cache

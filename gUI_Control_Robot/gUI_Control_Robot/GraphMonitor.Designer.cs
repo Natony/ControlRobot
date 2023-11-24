@@ -110,7 +110,7 @@ namespace gUI_Control_Robot
             this.Controls.Add(this.graphMotor2);
             this.Controls.Add(this.graphMotor1);
             this.Name = "GraphMonitor";
-            this.Text = "Form1";
+            this.Text = "Graph Monitor";
             this.Load += new System.EventHandler(this.GraphMonitor_Load);
             this.ResumeLayout(false);
 

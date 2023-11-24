@@ -29,7 +29,6 @@ namespace gUI_Control_Robot
         public double XValue { get { return Convert.ToDouble(txtBox_X.Text); } }
         public double YValue { get { return Convert.ToDouble(txtBox_Y.Text); } }
         public double ZValue { get { return Convert.ToDouble(txtBox_Z.Text); } }
-        public event Action<int, int, int, int> MotorAnglesChanged;
 
         public MainWindows()
         {
@@ -60,20 +59,17 @@ namespace gUI_Control_Robot
             label_Z.Text = "100";
         }
 //--------------------------------------------------------------------------------------------------------------------------------------------
-        private void UpdateProgressBarAndLabel(ProgressBar progressBar, Label label, int value, int min, int max, string motorCode)
+        private void UpdateProgressBar(ProgressBar progressBar, int value, int max, string motorCode)
         {
             try
             {
-                progressBar.Minimum = min;
                 progressBar.Maximum = max;
                 progressBar.Value = value;
-                label.Text = value.ToString();
 
                 if (serialPort1.IsOpen && !checkBox_simultaneous.Checked)
                 {
                     serialPort1.Write(value + motorCode + "\n");
                 }
-                MotorAnglesChanged?.Invoke(degree1, degree2, degree3, degree4);
             }
             catch(Exception error)
             {
@@ -81,16 +77,15 @@ namespace gUI_Control_Robot
             }
         }
 
-        private void UpdateDegreeAndForwardKinematics(int step, ProgressBar progressBar, Label label, int degree, ref int targetDegree, int min, int max, string motorCode)
+        private void UpdateDegreeAndForwardKinematics(int step, ProgressBar progressBar1, ProgressBar progressBar2, Label label, int degree, ref int targetDegree, int min, int max, string motorCode)
         {
             try
             {
                 // Update the target degree with the step
                 targetDegree += step;
-
-                // Ensure the target degree stays within the specified range
-                if (targetDegree > max) targetDegree = max;
-                if (targetDegree < min) targetDegree = min;
+                degree = targetDegree;
+                int targetDegree1;
+                int targetDegree2;
 
                 // Calculate the forward kinematics using the updated target degree
                 double newX, newY, newZ;
@@ -106,21 +101,68 @@ namespace gUI_Control_Robot
                 label_Y.Text = newY.ToString();
                 label_Z.Text = newZ.ToString();
 
-                // Update the progress bar and label for the specific motor
-                UpdateProgressBarAndLabel(progressBar, label, targetDegree, min, max, motorCode);
+                // Update the progress bar and label for the specific
+                if(targetDegree >= 0)
+                {
+                    if (targetDegree > max) targetDegree = max;
+                    targetDegree1 = targetDegree;
+                    UpdateProgressBar(progressBar1, targetDegree1, max, motorCode);
+                    targetDegree2 = 0;
+                    UpdateProgressBar(progressBar2, Math.Abs(targetDegree2), Math.Abs(min), motorCode);
+                }
+                else
+                {
+                    if (targetDegree < min) targetDegree = min;
+                    targetDegree2 = targetDegree;
+                    UpdateProgressBar(progressBar2, Math.Abs(targetDegree2), Math.Abs(min), motorCode);
+                    targetDegree1 = 0;
+                    UpdateProgressBar(progressBar1, targetDegree1, max, motorCode);
+                }
+                label.Text = targetDegree.ToString();
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
         }
-
-        private void update_ProgreesBar()
+        private void update_ProgreesBarIndex()
         {
-            progressBar_Base.Value = degree1;
-            progressBar_J1.Value = degree2;
-            progressBar_J2.Value = degree3;
-            progressBar_J3.Value = degree4;
+            //Base
+            progressBar_Base1.Minimum = 0;
+            progressBar_Base1.Maximum = 90;
+            progressBar_Base2.Value = degree1;
+
+            progressBar_Base2.Minimum = 0;
+            progressBar_Base2.Maximum = 90;
+            progressBar_Base1.Value = degree1;
+
+
+            //J1
+            progressBar_J1_1.Minimum = 0;
+            progressBar_J1_1.Maximum = 135;
+            progressBar_J1_1.Value = degree2;
+
+            progressBar_J1_2.Minimum = 0;
+            progressBar_J1_2.Maximum = 45;
+            progressBar_J1_2.Value = degree2;
+
+            //J2
+            progressBar_J2_1.Minimum = 0;
+            progressBar_J2_1.Maximum = 120;
+            progressBar_J2_1.Value = degree3;
+
+            progressBar_J2_2.Minimum = 0;
+            progressBar_J2_2.Maximum = 90;
+            progressBar_J2_2.Value = degree3;
+
+            //J3
+            progressBar_J3_1.Minimum = 0;
+            progressBar_J3_1.Maximum = 135;
+            progressBar_J3_1.Value = degree4;
+
+            progressBar_J3_2.Minimum = 0;
+            progressBar_J3_2.Maximum = 135;
+            progressBar_J3_2.Value = degree4;
         }
         private void update_Label()
         {
@@ -140,19 +182,26 @@ namespace gUI_Control_Robot
             degree2 = t2;
             degree3 = t3;
             degree4 = t4;
-            update_ProgreesBar();
+            update_ProgreesBarIndex();
             update_Label();
         }
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
+            degree1 = 0;
+            degree2 = 0;
+            degree3 = 0;
+            degree4 = 0;
             groupBox_Forward.Enabled = false;
             groupBox_Inverse.Enabled = false;
             groupBox_gripper.Enabled = false;
             groupBox_Graph.Enabled = false;
             btn_stop_program.Enabled = false;
+            btn_setHome.Enabled = false;
 
             btn_run_program.Enabled = true;
+            update_ProgreesBarIndex();
+            update_indexLabel();
         }
         private void comboBox_portList_DropDown(object sender, EventArgs e)
         {
@@ -165,6 +214,10 @@ namespace gUI_Control_Robot
         {
             try
             {
+                degree1 = 0;
+                degree2 = 0;
+                degree3 = 0;
+                degree4 = 0;
                 serialPort1.PortName = comboBox_portList.Text;
                 serialPort1.BaudRate = Convert.ToInt32(comboBox_baudRate.Text);
                 serialPort1.Open();
@@ -175,14 +228,13 @@ namespace gUI_Control_Robot
                 groupBox_gripper.Enabled = true;
                 groupBox_Graph.Enabled = true;
                 btn_stop_program.Enabled = true;
+                btn_setHome.Enabled = true;
 
                 btn_run_program.Enabled = false;
 
-                degree1 = 0;
-                degree2 = degree3 = degree4 = 0;
                 update_indexLabel();
-
-                update_ProgreesBar();
+                update_ProgreesBarIndex();
+            
                 if (!checkBox_simultaneous.Checked)
                 {
                     serialPort1.Write(degree1 + "A" + "\n");
@@ -203,7 +255,7 @@ namespace gUI_Control_Robot
             {
                 if(serialPort1.IsOpen)
                 {
-                    degree1 = 0;
+                    /*degree1 = 0;
                     degree2 = degree3 = degree4 = 0;
 
                     if (!checkBox_simultaneous.Checked)
@@ -212,7 +264,7 @@ namespace gUI_Control_Robot
                         serialPort1.Write(degree2 + "B" + "\n");
                         serialPort1.Write(degree3 + "C" + "\n");
                         serialPort1.Write(degree4 + "D" + "\n");
-                    }
+                    }*/
                     
                     serialPort1.Close();
 
@@ -222,14 +274,15 @@ namespace gUI_Control_Robot
                     groupBox_gripper.Enabled = false;
                     groupBox_Graph.Enabled = false;
                     btn_stop_program.Enabled = false;
+                    btn_setHome.Enabled = false;
 
                     btn_run_program.Enabled = true;
 
                     // group Forward
                     // progessBar
-                    update_ProgreesBar();
+                    //update_ProgreesBarIndex();
                     //label
-                    update_indexLabel();
+                    //update_indexLabel();
                 }
             }
             catch (Exception error)
@@ -260,8 +313,7 @@ namespace gUI_Control_Robot
                 if (step_Base.Text != null)
                 {
                     int step = Convert.ToInt32(step_Base.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_Base, label_Base, degree1, ref degree1, 0, 180, "A");
-
+                    UpdateDegreeAndForwardKinematics(step, progressBar_Base1, progressBar_Base2, label_Base, degree1, ref degree1, -90, 90, "A");
                 }
             }
             catch (Exception error)
@@ -270,24 +322,21 @@ namespace gUI_Control_Robot
             }
         }
 
-
         private void btn_sub_Base_Click(object sender, EventArgs e)
         {
-
             try
             {
                 if (step_Base.Text != null)
                 {
                     int step = Convert.ToInt32(step_Base.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_Base, label_Base, degree1, ref degree1, 0, 180, "A");
-
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_Base1, progressBar_Base2, label_Base, degree1, ref degree1, -90, 90, "A");
                 }
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
-        }
+        }  
 
         private void btn_plus_J1_Click(object sender, EventArgs e)
         {
@@ -296,8 +345,7 @@ namespace gUI_Control_Robot
                 if (step_J1 != null)
                 {
                     int step = Convert.ToInt32(step_J1.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J1, label_J1, degree2, ref degree2, 0, 500, "B");
-
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J1_1, progressBar_J1_2, label_J1, degree2, ref degree2, -45, 135, "B");
                 }
             }
             catch (Exception error)
@@ -314,7 +362,7 @@ namespace gUI_Control_Robot
                 if (step_J1 != null)
                 {
                     int step = Convert.ToInt32(step_J1.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J1, label_J1, degree2, ref degree2, 0, 500, "B");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J1_1, progressBar_J1_2, label_J1, degree2, ref degree2, -45, 135, "B");
 
                 }
             }
@@ -331,7 +379,7 @@ namespace gUI_Control_Robot
                 if (step_J2 != null)
                 {
                     int step = Convert.ToInt32(step_J2.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J2, label_J2, degree2, ref degree3, 0, 180, "C");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J2_1, progressBar_J2_2, label_J2, degree3, ref degree3, -90, 120, "C");
 
                 }
             }
@@ -348,7 +396,7 @@ namespace gUI_Control_Robot
                 if (step_J2 != null)
                 {
                     int step = Convert.ToInt32(step_J2.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2, label_J2, degree2, ref degree3, 0, 180, "C");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2_1, progressBar_J2_2, label_J2, degree, ref degree3, -90, 120, "C");
 
                 }
             }
@@ -365,7 +413,7 @@ namespace gUI_Control_Robot
                 if (step_J3 != null)
                 {
                     int step = Convert.ToInt32(step_J3.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J3, label_J3, degree4, ref degree4, 0, 180, "D");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J3_1, progressBar_J3_2, label_J3, degree4, ref degree4, -135, 120, "D");
 
                 }
             }
@@ -382,7 +430,7 @@ namespace gUI_Control_Robot
                 if (step_J3 != null)
                 {
                     int step = Convert.ToInt32(step_J3.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3, label_J3, degree4, ref degree4, 0, 180, "D");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3_1, progressBar_J3_2, label_J3, degree4, ref degree4, -135, 120, "D");
 
                 }
             }
@@ -445,6 +493,27 @@ namespace gUI_Control_Robot
             }
         }
 
+        private void btn_setHome_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                degree1 = 90;
+                degree2 = 135;
+                degree3 = 120;
+                degree4 = 135;
+                
+                UpdateProgressBar(progressBar_Base1, degree1, 90, "A");
+                UpdateProgressBar(progressBar_J1_1, degree2, 135, "B");
+                UpdateProgressBar(progressBar_J2_1, degree3, 120, "C");
+                UpdateProgressBar(progressBar_J3_1, degree4, 135, "D");
+                update_Label();
+
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
 
         private void btn_open_gripper_Click(object sender, EventArgs e)
         {
@@ -463,7 +532,7 @@ namespace gUI_Control_Robot
             {
                 if (checkBox_simultaneous.Checked)
                 {
-                    update_ProgreesBar();
+                    update_ProgreesBarIndex();
 
                     double newX, newY, newZ;
                     forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);

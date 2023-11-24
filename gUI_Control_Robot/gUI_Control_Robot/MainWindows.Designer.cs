@@ -41,6 +41,10 @@ namespace gUI_Control_Robot
             this.btn_run_program = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox_Forward = new System.Windows.Forms.GroupBox();
+            this.progressBar_J3_2 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_J2_2 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_J1_2 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_Base2 = new System.Windows.Forms.ProgressBar();
             this.label_J3 = new System.Windows.Forms.Label();
             this.label_J2 = new System.Windows.Forms.Label();
             this.label_J1 = new System.Windows.Forms.Label();
@@ -54,19 +58,19 @@ namespace gUI_Control_Robot
             this.step_J3 = new System.Windows.Forms.TextBox();
             this.btn_sub_J3 = new System.Windows.Forms.Button();
             this.btn_plus_J3 = new System.Windows.Forms.Button();
-            this.progressBar_J3 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_J3_1 = new System.Windows.Forms.ProgressBar();
             this.step_J2 = new System.Windows.Forms.TextBox();
             this.btn_sub_J2 = new System.Windows.Forms.Button();
             this.btn_plus_J2 = new System.Windows.Forms.Button();
-            this.progressBar_J2 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_J2_1 = new System.Windows.Forms.ProgressBar();
             this.step_J1 = new System.Windows.Forms.TextBox();
             this.btn_sub_J1 = new System.Windows.Forms.Button();
             this.btn_plus_J1 = new System.Windows.Forms.Button();
-            this.progressBar_J1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_J1_1 = new System.Windows.Forms.ProgressBar();
             this.step_Base = new System.Windows.Forms.TextBox();
             this.btn_sub_Base = new System.Windows.Forms.Button();
             this.btn_plus_Base = new System.Windows.Forms.Button();
-            this.progressBar_Base = new System.Windows.Forms.ProgressBar();
+            this.progressBar_Base1 = new System.Windows.Forms.ProgressBar();
             this.groupBox_Inverse = new System.Windows.Forms.GroupBox();
             this.btn_Calculate = new System.Windows.Forms.Button();
             this.label_Z = new System.Windows.Forms.Label();
@@ -82,6 +86,7 @@ namespace gUI_Control_Robot
             this.btn_stop_program = new System.Windows.Forms.Button();
             this.groupBox_Graph = new System.Windows.Forms.GroupBox();
             this.btn_Graph = new System.Windows.Forms.Button();
+            this.btn_setHome = new System.Windows.Forms.Button();
             this.groupBox_Forward.SuspendLayout();
             this.groupBox_Inverse.SuspendLayout();
             this.groupBox_gripper.SuspendLayout();
@@ -184,6 +189,10 @@ namespace gUI_Control_Robot
             // 
             // groupBox_Forward
             // 
+            this.groupBox_Forward.Controls.Add(this.progressBar_J3_2);
+            this.groupBox_Forward.Controls.Add(this.progressBar_J2_2);
+            this.groupBox_Forward.Controls.Add(this.progressBar_J1_2);
+            this.groupBox_Forward.Controls.Add(this.progressBar_Base2);
             this.groupBox_Forward.Controls.Add(this.label_J3);
             this.groupBox_Forward.Controls.Add(this.label_J2);
             this.groupBox_Forward.Controls.Add(this.label_J1);
@@ -197,19 +206,19 @@ namespace gUI_Control_Robot
             this.groupBox_Forward.Controls.Add(this.step_J3);
             this.groupBox_Forward.Controls.Add(this.btn_sub_J3);
             this.groupBox_Forward.Controls.Add(this.btn_plus_J3);
-            this.groupBox_Forward.Controls.Add(this.progressBar_J3);
+            this.groupBox_Forward.Controls.Add(this.progressBar_J3_1);
             this.groupBox_Forward.Controls.Add(this.step_J2);
             this.groupBox_Forward.Controls.Add(this.btn_sub_J2);
             this.groupBox_Forward.Controls.Add(this.btn_plus_J2);
-            this.groupBox_Forward.Controls.Add(this.progressBar_J2);
+            this.groupBox_Forward.Controls.Add(this.progressBar_J2_1);
             this.groupBox_Forward.Controls.Add(this.step_J1);
             this.groupBox_Forward.Controls.Add(this.btn_sub_J1);
             this.groupBox_Forward.Controls.Add(this.btn_plus_J1);
-            this.groupBox_Forward.Controls.Add(this.progressBar_J1);
+            this.groupBox_Forward.Controls.Add(this.progressBar_J1_1);
             this.groupBox_Forward.Controls.Add(this.step_Base);
             this.groupBox_Forward.Controls.Add(this.btn_sub_Base);
             this.groupBox_Forward.Controls.Add(this.btn_plus_Base);
-            this.groupBox_Forward.Controls.Add(this.progressBar_Base);
+            this.groupBox_Forward.Controls.Add(this.progressBar_Base1);
             this.groupBox_Forward.Location = new System.Drawing.Point(75, 61);
             this.groupBox_Forward.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox_Forward.Name = "groupBox_Forward";
@@ -218,6 +227,46 @@ namespace gUI_Control_Robot
             this.groupBox_Forward.TabIndex = 47;
             this.groupBox_Forward.TabStop = false;
             this.groupBox_Forward.Text = "FORWARD KINEMATICS";
+            // 
+            // progressBar_J3_2
+            // 
+            this.progressBar_J3_2.Location = new System.Drawing.Point(90, 359);
+            this.progressBar_J3_2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J3_2.Name = "progressBar_J3_2";
+            this.progressBar_J3_2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.progressBar_J3_2.RightToLeftLayout = true;
+            this.progressBar_J3_2.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J3_2.TabIndex = 62;
+            // 
+            // progressBar_J2_2
+            // 
+            this.progressBar_J2_2.Location = new System.Drawing.Point(89, 244);
+            this.progressBar_J2_2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J2_2.Name = "progressBar_J2_2";
+            this.progressBar_J2_2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.progressBar_J2_2.RightToLeftLayout = true;
+            this.progressBar_J2_2.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J2_2.TabIndex = 61;
+            // 
+            // progressBar_J1_2
+            // 
+            this.progressBar_J1_2.Location = new System.Drawing.Point(90, 134);
+            this.progressBar_J1_2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J1_2.Name = "progressBar_J1_2";
+            this.progressBar_J1_2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.progressBar_J1_2.RightToLeftLayout = true;
+            this.progressBar_J1_2.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J1_2.TabIndex = 60;
+            // 
+            // progressBar_Base2
+            // 
+            this.progressBar_Base2.Location = new System.Drawing.Point(90, 26);
+            this.progressBar_Base2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_Base2.Name = "progressBar_Base2";
+            this.progressBar_Base2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.progressBar_Base2.RightToLeftLayout = true;
+            this.progressBar_Base2.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_Base2.TabIndex = 59;
             // 
             // label_J3
             // 
@@ -343,13 +392,13 @@ namespace gUI_Control_Robot
             this.btn_plus_J3.UseVisualStyleBackColor = true;
             this.btn_plus_J3.Click += new System.EventHandler(this.btn_plus_J3_Click);
             // 
-            // progressBar_J3
+            // progressBar_J3_1
             // 
-            this.progressBar_J3.Location = new System.Drawing.Point(89, 359);
-            this.progressBar_J3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.progressBar_J3.Name = "progressBar_J3";
-            this.progressBar_J3.Size = new System.Drawing.Size(293, 35);
-            this.progressBar_J3.TabIndex = 45;
+            this.progressBar_J3_1.Location = new System.Drawing.Point(239, 359);
+            this.progressBar_J3_1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J3_1.Name = "progressBar_J3_1";
+            this.progressBar_J3_1.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J3_1.TabIndex = 45;
             // 
             // step_J2
             // 
@@ -381,13 +430,13 @@ namespace gUI_Control_Robot
             this.btn_plus_J2.UseVisualStyleBackColor = true;
             this.btn_plus_J2.Click += new System.EventHandler(this.btn_plus_J2_Click);
             // 
-            // progressBar_J2
+            // progressBar_J2_1
             // 
-            this.progressBar_J2.Location = new System.Drawing.Point(89, 244);
-            this.progressBar_J2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.progressBar_J2.Name = "progressBar_J2";
-            this.progressBar_J2.Size = new System.Drawing.Size(293, 35);
-            this.progressBar_J2.TabIndex = 40;
+            this.progressBar_J2_1.Location = new System.Drawing.Point(239, 244);
+            this.progressBar_J2_1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J2_1.Name = "progressBar_J2_1";
+            this.progressBar_J2_1.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J2_1.TabIndex = 40;
             // 
             // step_J1
             // 
@@ -419,13 +468,13 @@ namespace gUI_Control_Robot
             this.btn_plus_J1.UseVisualStyleBackColor = true;
             this.btn_plus_J1.Click += new System.EventHandler(this.btn_plus_J1_Click);
             // 
-            // progressBar_J1
+            // progressBar_J1_1
             // 
-            this.progressBar_J1.Location = new System.Drawing.Point(89, 134);
-            this.progressBar_J1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.progressBar_J1.Name = "progressBar_J1";
-            this.progressBar_J1.Size = new System.Drawing.Size(293, 35);
-            this.progressBar_J1.TabIndex = 35;
+            this.progressBar_J1_1.Location = new System.Drawing.Point(239, 134);
+            this.progressBar_J1_1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_J1_1.Name = "progressBar_J1_1";
+            this.progressBar_J1_1.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_J1_1.TabIndex = 35;
             // 
             // step_Base
             // 
@@ -457,13 +506,13 @@ namespace gUI_Control_Robot
             this.btn_plus_Base.UseVisualStyleBackColor = true;
             this.btn_plus_Base.Click += new System.EventHandler(this.btn_plus_Base_Click);
             // 
-            // progressBar_Base
+            // progressBar_Base1
             // 
-            this.progressBar_Base.Location = new System.Drawing.Point(89, 26);
-            this.progressBar_Base.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.progressBar_Base.Name = "progressBar_Base";
-            this.progressBar_Base.Size = new System.Drawing.Size(293, 35);
-            this.progressBar_Base.TabIndex = 30;
+            this.progressBar_Base1.Location = new System.Drawing.Point(239, 26);
+            this.progressBar_Base1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar_Base1.Name = "progressBar_Base1";
+            this.progressBar_Base1.Size = new System.Drawing.Size(143, 35);
+            this.progressBar_Base1.TabIndex = 30;
             // 
             // groupBox_Inverse
             // 
@@ -635,11 +684,23 @@ namespace gUI_Control_Robot
             this.btn_Graph.UseVisualStyleBackColor = true;
             this.btn_Graph.Click += new System.EventHandler(this.btn_Graph_Click);
             // 
+            // btn_setHome
+            // 
+            this.btn_setHome.Location = new System.Drawing.Point(954, 487);
+            this.btn_setHome.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_setHome.Name = "btn_setHome";
+            this.btn_setHome.Size = new System.Drawing.Size(116, 75);
+            this.btn_setHome.TabIndex = 53;
+            this.btn_setHome.Text = "SET HOME";
+            this.btn_setHome.UseVisualStyleBackColor = true;
+            this.btn_setHome.Click += new System.EventHandler(this.btn_setHome_Click);
+            // 
             // MainWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1114, 590);
+            this.ClientSize = new System.Drawing.Size(1194, 650);
+            this.Controls.Add(this.btn_setHome);
             this.Controls.Add(this.groupBox_Graph);
             this.Controls.Add(this.btn_stop_program);
             this.Controls.Add(this.groupBox4);
@@ -650,7 +711,7 @@ namespace gUI_Control_Robot
             this.Controls.Add(this.btn_run_program);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainWindows";
-            this.Text = "Form1";
+            this.Text = "Main Windows";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox_Forward.ResumeLayout(false);
@@ -685,19 +746,19 @@ namespace gUI_Control_Robot
         private System.Windows.Forms.TextBox step_J3;
         private System.Windows.Forms.Button btn_sub_J3;
         private System.Windows.Forms.Button btn_plus_J3;
-        private System.Windows.Forms.ProgressBar progressBar_J3;
+        private System.Windows.Forms.ProgressBar progressBar_J3_1;
         private System.Windows.Forms.TextBox step_J2;
         private System.Windows.Forms.Button btn_sub_J2;
         private System.Windows.Forms.Button btn_plus_J2;
-        private System.Windows.Forms.ProgressBar progressBar_J2;
+        private System.Windows.Forms.ProgressBar progressBar_J2_1;
         private System.Windows.Forms.TextBox step_J1;
         private System.Windows.Forms.Button btn_sub_J1;
         private System.Windows.Forms.Button btn_plus_J1;
-        private System.Windows.Forms.ProgressBar progressBar_J1;
+        private System.Windows.Forms.ProgressBar progressBar_J1_1;
         private System.Windows.Forms.TextBox step_Base;
         private System.Windows.Forms.Button btn_sub_Base;
         private System.Windows.Forms.Button btn_plus_Base;
-        private System.Windows.Forms.ProgressBar progressBar_Base;
+        private System.Windows.Forms.ProgressBar progressBar_Base1;
         private System.Windows.Forms.GroupBox groupBox_Inverse;
         private System.Windows.Forms.GroupBox groupBox_gripper;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -719,6 +780,11 @@ namespace gUI_Control_Robot
         private System.Windows.Forms.Button btn_Calculate;
         private System.Windows.Forms.GroupBox groupBox_Graph;
         private System.Windows.Forms.Button btn_Graph;
+        private System.Windows.Forms.ProgressBar progressBar_Base2;
+        private System.Windows.Forms.ProgressBar progressBar_J1_2;
+        private System.Windows.Forms.ProgressBar progressBar_J3_2;
+        private System.Windows.Forms.ProgressBar progressBar_J2_2;
+        private System.Windows.Forms.Button btn_setHome;
     }
 }
 
