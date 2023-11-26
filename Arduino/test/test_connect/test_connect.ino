@@ -238,7 +238,6 @@ void setHome(){
   {
     Serial.println("The limit switch4: TOUCHED");
   }
-  delay(2000);
 }
 void loop() {
   //call limit in loop

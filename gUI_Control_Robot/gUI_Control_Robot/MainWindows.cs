@@ -22,13 +22,23 @@ namespace gUI_Control_Robot
         private int t2;
         private int t3;
         private int t4;
+
         public int T1 { set { t1 = value; } get { return Convert.ToInt32(label_Base.Text); } }
         public int T2 { set { t2 = value; } get { return Convert.ToInt32(label_J1.Text); } }
         public int T3 { set { t3 = value; } get { return Convert.ToInt32(label_J2.Text); } }
         public int T4 { set { t4 = value; } get { return Convert.ToInt32(label_J3.Text); } }
+
         public double XValue { get { return Convert.ToDouble(txtBox_X.Text); } }
         public double YValue { get { return Convert.ToDouble(txtBox_Y.Text); } }
         public double ZValue { get { return Convert.ToDouble(txtBox_Z.Text); } }
+
+        public double L0 { get { return 63; } }
+        public double L2 { get { return 120; } }
+        public double L4 { get { return 125; } }
+        public double L5 { get { return 125; } }
+        public double L6 { get { return 80; } }
+        public double L { get { return 250; } }
+        public double Theta234 { get { return 0; } }
 
         public MainWindows()
         {
@@ -84,8 +94,8 @@ namespace gUI_Control_Robot
                 // Update the target degree with the step
                 targetDegree += step;
                 degree = targetDegree;
-                int targetDegree1;
-                int targetDegree2;
+                int targetDegree1 = 0;
+                int targetDegree2 = 0;
 
                 // Calculate the forward kinematics using the updated target degree
                 double newX, newY, newZ;
@@ -108,7 +118,7 @@ namespace gUI_Control_Robot
                     targetDegree1 = targetDegree;
                     UpdateProgressBar(progressBar1, targetDegree1, max, motorCode);
                     targetDegree2 = 0;
-                    UpdateProgressBar(progressBar2, Math.Abs(targetDegree2), Math.Abs(min), motorCode);
+                    progressBar2.Value = targetDegree2;
                 }
                 else
                 {
@@ -116,7 +126,7 @@ namespace gUI_Control_Robot
                     targetDegree2 = targetDegree;
                     UpdateProgressBar(progressBar2, Math.Abs(targetDegree2), Math.Abs(min), motorCode);
                     targetDegree1 = 0;
-                    UpdateProgressBar(progressBar1, targetDegree1, max, motorCode);
+                    progressBar1.Value = targetDegree1;
                 }
                 label.Text = targetDegree.ToString();
             }
@@ -396,7 +406,7 @@ namespace gUI_Control_Robot
                 if (step_J2 != null)
                 {
                     int step = Convert.ToInt32(step_J2.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2_1, progressBar_J2_2, label_J2, degree, ref degree3, -90, 120, "C");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2_1, progressBar_J2_2, label_J2, degree3, ref degree3, -90, 120, "C");
 
                 }
             }
@@ -446,7 +456,7 @@ namespace gUI_Control_Robot
             {
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(0 + "H" + "\n");
+                    serialPort1.Write(0 + "E" + "\n");
                 }
             }
         }
@@ -497,16 +507,11 @@ namespace gUI_Control_Robot
         {
             try
             {
-                degree1 = 90;
-                degree2 = 135;
-                degree3 = 120;
-                degree4 = 135;
-                
-                UpdateProgressBar(progressBar_Base1, degree1, 90, "A");
-                UpdateProgressBar(progressBar_J1_1, degree2, 135, "B");
-                UpdateProgressBar(progressBar_J2_1, degree3, 120, "C");
-                UpdateProgressBar(progressBar_J3_1, degree4, 135, "D");
-                update_Label();
+                if (serialPort1.IsOpen)
+                {
+                    serialPort1.Write(1 + "H" + "\n");
+                }
+
 
             }
             catch (Exception error)
@@ -521,7 +526,7 @@ namespace gUI_Control_Robot
             {
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(1 + "H" + "\n");
+                    serialPort1.Write(1 + "E" + "\n");
                 }
             }
         }
