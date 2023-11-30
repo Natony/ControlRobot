@@ -8,7 +8,6 @@ namespace gUI_Control_Robot
 {
     class inverse_Kinematics
     {
-        MainWindows mainForm;
         public static double[,] CalculateInverseKinematics(double x, double y, double z, double l0, double l2, double l4, double l5, double l6, double l, double theta234)
         {
             double c1_1, c1_2, s1_1, s1_2, theta1_1, theta1_2;

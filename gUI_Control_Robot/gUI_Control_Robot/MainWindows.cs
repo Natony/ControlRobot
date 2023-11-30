@@ -51,7 +51,7 @@ namespace gUI_Control_Robot
             y = 100;
             z = 100;
         }
-//----------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------
         private void update_indexLabel()
         {
             step_Base.Text = "9";
@@ -68,20 +68,35 @@ namespace gUI_Control_Robot
             label_Y.Text = "100";
             label_Z.Text = "100";
         }
-//--------------------------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------------------------------
         private void UpdateProgressBar(ProgressBar progressBar, int value, int max, string motorCode)
         {
             try
             {
-                progressBar.Maximum = max;
-                progressBar.Value = value;
-
-                if (serialPort1.IsOpen && !checkBox_simultaneous.Checked)
+                if (value >= 0)
                 {
-                    serialPort1.Write(value + motorCode + "\n");
+                    progressBar.Maximum = max;
+                    progressBar.Value = value;
+
+                    if (serialPort1.IsOpen && !checkBox_simultaneous.Checked)
+                    {
+                        serialPort1.Write(value + motorCode + "\n");
+                        Console.WriteLine($"value: {value}");
+                    }
+                }
+                else if (value <= 0)
+                {
+                    progressBar.Maximum = Math.Abs(max);
+                    progressBar.Value = Math.Abs(value);
+
+                    if (serialPort1.IsOpen && !checkBox_simultaneous.Checked)
+                    {
+                        serialPort1.Write(value + motorCode + "\n");
+                        Console.WriteLine($"value: {value}");
+                    }
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
@@ -112,7 +127,7 @@ namespace gUI_Control_Robot
                 label_Z.Text = newZ.ToString();
 
                 // Update the progress bar and label for the specific
-                if(targetDegree >= 0)
+                if (targetDegree >= 0)
                 {
                     if (targetDegree > max) targetDegree = max;
                     targetDegree1 = targetDegree;
@@ -124,7 +139,7 @@ namespace gUI_Control_Robot
                 {
                     if (targetDegree < min) targetDegree = min;
                     targetDegree2 = targetDegree;
-                    UpdateProgressBar(progressBar2, Math.Abs(targetDegree2), Math.Abs(min), motorCode);
+                    UpdateProgressBar(progressBar2, targetDegree2, min, motorCode);
                     targetDegree1 = 0;
                     progressBar1.Value = targetDegree1;
                 }
@@ -244,7 +259,7 @@ namespace gUI_Control_Robot
 
                 update_indexLabel();
                 update_ProgreesBarIndex();
-            
+
                 if (!checkBox_simultaneous.Checked)
                 {
                     serialPort1.Write(degree1 + "A" + "\n");
@@ -253,7 +268,7 @@ namespace gUI_Control_Robot
                     serialPort1.Write(degree4 + "D" + "\n");
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
@@ -263,7 +278,7 @@ namespace gUI_Control_Robot
         {
             try
             {
-                if(serialPort1.IsOpen)
+                if (serialPort1.IsOpen)
                 {
                     /*degree1 = 0;
                     degree2 = degree3 = degree4 = 0;
@@ -275,7 +290,7 @@ namespace gUI_Control_Robot
                         serialPort1.Write(degree3 + "C" + "\n");
                         serialPort1.Write(degree4 + "D" + "\n");
                     }*/
-                    
+
                     serialPort1.Close();
 
                     MessageBox.Show("Disconnected to Robot");
@@ -346,7 +361,7 @@ namespace gUI_Control_Robot
             {
                 MessageBox.Show(error.Message);
             }
-        }  
+        }
 
         private void btn_plus_J1_Click(object sender, EventArgs e)
         {
@@ -478,9 +493,9 @@ namespace gUI_Control_Robot
                     serialPort1.Write(degree3 + "C" + "\n");
                     serialPort1.Write(degree4 + "D" + "\n");
                 }
-                
+
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }

@@ -21,7 +21,7 @@ ezButton limitSwitchMotor3(11);
 ezButton limitSwitchMotor4(A0);
 char c;
 String dataIn;
-int8_t indexOfA, indexOfB, indexOfC, indexOfD;
+int8_t indexOfA, indexOfB, indexOfC, indexOfD, indexOfH;
 
 // Thêm biến để lưu trữ góc mục tiêu và góc hiện tại của động cơ
 int curDegreeMotor1 = 0, curDegreeMotor2 = 0, curDegreeMotor3 = 0, curDegreeMotor4 = 0;
@@ -29,6 +29,12 @@ int tarDegreeMotor1 = 0, tarDegreeMotor2 = 0, tarDegreeMotor3 = 0, tarDegreeMoto
 int stepsMotor1, stepsMotor2, stepsMotor3, stepsMotor4;
 int tarDegree = 0, curDegree = 0;
 
+int state1 = 0;
+int state2 = 0;
+int state3 = 0;
+int state4 = 0;
+
+int statusSetHome = 0; 
 void setup() {
   Serial.begin(9600);
 
@@ -72,12 +78,13 @@ void Receive_Serial_Data() {
 }
 
 void Parse_the_Data() {
-  String str_stpMoto1Degree, str_stpMoto2Degree, str_stpMoto3Degree, str_stpMoto4Degree;
+  String str_stpMoto1Degree, str_stpMoto2Degree, str_stpMoto3Degree, str_stpMoto4Degree, str_SetHome;;
 
   indexOfA = dataIn.indexOf("A");
   indexOfB = dataIn.indexOf("B");
   indexOfC = dataIn.indexOf("C");
   indexOfD = dataIn.indexOf("D");
+  indexOfH = dataIn.indexOf("H");
 
   if (indexOfA > -1) {
     str_stpMoto1Degree = dataIn.substring(0, indexOfA);
@@ -94,6 +101,10 @@ void Parse_the_Data() {
   if (indexOfD > -1) {
     str_stpMoto4Degree = dataIn.substring(indexOfC + 1, indexOfD);
     tarDegreeMotor4 = str_stpMoto4Degree.toInt();
+  }
+  if (indexOfH > -1) {
+    str_SetHome = dataIn.substring(indexOfD + 1, indexOfH);
+    statusSetHome = str_SetHome.toInt();
   }
 }
 
@@ -171,73 +182,118 @@ void setHome(){
   int stateLS3 = limitSwitchMotor3.getState();
   int stateLS4 = limitSwitchMotor4.getState();
 
-  if(stateLS1 == LOW && stateLS2 == LOW && stateLS3 == LOW && stateLS4 == LOW){
-    delay(5000);
-    Serial.println("go to Home");
-  }
-  //limit switch 1
-  if(limitSwitchMotor1.isPressed())
-    Serial.println("The limit switch 1: UNTOUCHED -> TOUCHED");
-
-  if(limitSwitchMotor1.isReleased())
-    Serial.println("The limit switch1 : TOUCHED -> UNTOUCHED");
-    
-  if(stateLS1 == HIGH)
-  {    
-    Serial.println("The limit switch1: UNTOUCHED");
-  }
-  else
+  if(stateLS1 == LOW)
   {
-    Serial.println("The limit switch1: TOUCHED");
+    state1 = 1;
   }
-
-  //limit switch 2
-  if(limitSwitchMotor2.isPressed())
-    Serial.println("The limit switch 2: UNTOUCHED -> TOUCHED");
-
-  if(limitSwitchMotor2.isReleased())
-    Serial.println("The limit switch2 : TOUCHED -> UNTOUCHED");
-    
-  if(stateLS2 == HIGH)
-  {    
-    Serial.println("The limit switch2: UNTOUCHED");
-  }
-  else
+    if(stateLS2 == LOW)
   {
-    Serial.println("The limit switch2: TOUCHED");
+    state2 = 1;
   }
-
-  //limit switch 3
-  if(limitSwitchMotor3.isPressed())
-    Serial.println("The limit switch 3: UNTOUCHED -> TOUCHED");
-
-  if(limitSwitchMotor3.isReleased())
-    Serial.println("The limit switch3 : TOUCHED -> UNTOUCHED");
-    
-  if(stateLS3 == HIGH)
-  {    
-    Serial.println("The limit switch3: UNTOUCHED");
-  }
-  else
+    if(stateLS3 == LOW)
   {
-    Serial.println("The limit switch3: TOUCHED");
+    state3 = 1;
   }
-
-  //limit switch 4
-  if(limitSwitchMotor4.isPressed())
-    Serial.println("The limit switch 4: UNTOUCHED -> TOUCHED");
-
-  if(limitSwitchMotor4.isReleased())
-    Serial.println("The limit switch4 : TOUCHED -> UNTOUCHED");
-    
-  if(stateLS4 == HIGH)
-  {    
-    Serial.println("The limit switch4: UNTOUCHED");
-  }
-  else
+    if(stateLS4 == LOW)
   {
-    Serial.println("The limit switch4: TOUCHED");
+    state4 = 1;
   }
+  if(state1 == 0 && state2 == 1 && state3 == 1 && state4 == 1 )
+  {
+      digitalWrite(dirX, LOW);
+      digitalWrite(stepX, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepX, LOW);
+      delayMicroseconds(1000);
+  }
+    if(state2 == 0 )
+  {
+      digitalWrite(dirY, HIGH);
+      digitalWrite(stepY, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepY, LOW);
+      delayMicroseconds(1000);
+  }
+    if(state3 == 0 && state2 == 1 && state4 == 1)
+  {
+      digitalWrite(dirZ, HIGH);
+      digitalWrite(stepZ, HIGH);
+      delayMicroseconds(3000);
+      digitalWrite(stepZ, LOW);
+      delayMicroseconds(3000);
+  }
+    if(state4 == 0 && state2 == 1)
+  {
+      digitalWrite(dirA, HIGH);
+      digitalWrite(stepA, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepA, LOW);
+      delayMicroseconds(1000);
+  }
+  if(state1 == 1 && state2 == 1 && state3 == 1 && state4 == 1)
+  {
+    digitalWrite(stepX, LOW);
+    delayMicroseconds(1000);
+    digitalWrite(dirX, LOW);
+    for(int i = 0; i <= 540; i++)
+    {
+      digitalWrite(stepX, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepX, LOW);
+      delayMicroseconds(1000);
+    }
+    digitalWrite(dirY, HIGH);
+    for(int i = 0; i <= 3200; i++)
+    {
+      digitalWrite(stepY, LOW);
+      delayMicroseconds(1000);
+      digitalWrite(stepY, LOW);
+      delayMicroseconds(1000);
+    }
+    digitalWrite(dirZ, LOW);
+    for(int i = 0; i <= 4550; i++)
+    {
+      digitalWrite(stepZ, HIGH);
+      delayMicroseconds(2000);
+      digitalWrite(stepZ, LOW);
+      delayMicroseconds(2000); 
+    }
+    digitalWrite(dirA, LOW);
+    for(int i = 0; i <=2750; i++)
+    {
+      digitalWrite(stepA, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepA, LOW);
+      delayMicroseconds(1000);
+    }
+    state1 = 0;
+    state2 = 0;
+    state3 = 0;
+    state4 = 0;
+    curDegreeMotor1 = 0;
+    curDegreeMotor2 = 0;
+    curDegreeMotor3 = 0;
+    curDegreeMotor4 = 0;
+    tarDegreeMotor1 = 0;
+    tarDegreeMotor2 = 0;
+    tarDegreeMotor3 = 0;
+    tarDegreeMotor4 = 0;
+    statusSetHome = 0;
+  }
+}
+
+void display() {
+  lcd.setCursor(1, 0);
+  lcd.print(tarDegreeMotor1);
+
+  lcd.setCursor(5, 0);
+  lcd.print(tarDegreeMotor2);
+
+  lcd.setCursor(1, 1);
+  lcd.print(tarDegreeMotor3);
+
+  lcd.setCursor(5, 1);
+  lcd.print(tarDegreeMotor4);
 }
 void loop() {
   //call limit in loop
@@ -260,7 +316,13 @@ void loop() {
   motorStepper2();
   motorStepper3();
   motorStepper4();
-  setHome();
+  // setHome();
+
+  display();
+
+  if(statusSetHome == 1){
+    setHome();
+  }  
 }
 
 
