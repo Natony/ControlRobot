@@ -8,20 +8,28 @@ namespace gUI_Control_Robot
 {
     class forward_Kinematics
     {
-        public static void CalculateXYZ(float degree1, int degree2, int degree3, int degree4, out double x, out double y, out double z)
+        private MainWindows mainForm;
+
+        public forward_Kinematics(MainWindows form)
+        {
+            mainForm = form;
+        }
+
+        public void CalculateXYZ(float degree1, int degree2, int degree3, int degree4, out double x, out double y, out double z)
         {
             // Chuyển đổi từ độ sang radian
             double t1 = degree1 * Math.PI / 180.0;
             double t2 = degree2 * Math.PI / 180.0;
             double t3 = degree3 * Math.PI / 180.0;
             double t4 = degree4 * Math.PI / 180.0;
+            
             double l0, l2, l4, l5, l6, l;
-            l0 = 63;
-            l2 = 120;
-            l4 = 125;
-            l5 = 125;
-            l6 = 80;
-            l = 250;
+            l0 = mainForm.L0;
+            l2 = mainForm.L2;
+            l4 = mainForm.L4;
+            l5 = mainForm.L5;
+            l6 = mainForm.L6;
+            l = mainForm.L;
 
             double[,] A1 = {
             { Math.Cos(t1), -Math.Sin(t1), 0, -l0 },
@@ -30,23 +38,23 @@ namespace gUI_Control_Robot
             { 0, 0, 0, 1 }
         };
             double[,] A2 = {
-            { Math.Cos(t2 + Math.PI / 2), -Math.Sin(t2 + Math.PI / 2), 0, l2},
+            {0, 1, 0, l2},
             { 0, 0, 1, 0 },
-            { Math.Sin(t2 + Math.PI / 2), Math.Cos(t2 + Math.PI / 2), 0, 0 },
+            { 1, 0, 0, 0 },
             { 0, 0, 0, 1 }
         };
 
             double[,] Atg = {
-            { 1, 0, 0, l },
-            { 0, 1, 0, 0 },
+            { Math.Cos(t2), -Math.Sin(t2), 0, l },
+            { Math.Sin(t2), Math.Cos(t2), 0, 0 },
             { 0, 0, 1, 0 },
             { 0, 0, 0, 1 }
         };
 
             double[,] A3 = {    
             { Math.Cos(t3), -Math.Sin(t3), 0, l4 },
-            { Math.Sin(t3), Math.Cos(t3), 0, 0 },
-            { 0, 0, 1, 0 },
+            { -Math.Sin(t3), -Math.Cos(t3), 0, 0 },
+            { 0, 0, -1, 0 },
             { 0, 0, 0, 1 }
         };
 

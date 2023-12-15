@@ -14,9 +14,21 @@ namespace gUI_Control_Robot
     public partial class MainWindows : Form
     {
         private int degree1;
+        private int degree1_1;
+        private int degree1_2;
+
         private int degree2;
+        private int degree2_1;
+        private int degree2_2;
+
         private int degree3;
+        private int degree3_1;
+        private int degree3_2;
+
         private int degree4;
+        private int degree4_1;
+        private int degree4_2;
+
         private int x, y, z;
         private int t1;
         private int t2;
@@ -32,24 +44,38 @@ namespace gUI_Control_Robot
         public double YValue { get { return Convert.ToDouble(txtBox_Y.Text); } }
         public double ZValue { get { return Convert.ToDouble(txtBox_Z.Text); } }
 
-        public double L0 { get { return 63; } }
-        public double L2 { get { return 120; } }
+        public double L0 { get { return 55; } }
+        public double L2 { get { return 91; } }
         public double L4 { get { return 125; } }
         public double L5 { get { return 125; } }
-        public double L6 { get { return 80; } }
-        public double L { get { return 250; } }
+        public double L6 { get { return 100; } }
+        public double L { get { return 235; } }
         public double Theta234 { get { return 0; } }
 
+        private forward_Kinematics FK;
         public MainWindows()
         {
             InitializeComponent();
             degree1 = 0;
+            degree1_1 = 0;
+            degree1_2 = 0;
+
             degree2 = 0;
+            degree2_1 = 0;
+            degree2_2 = 0;
+
             degree3 = 0;
+            degree3_1 = 0;
+            degree3_2 = 0;
+
             degree4 = 0;
+            degree4_1 = 0;
+            degree4_2 = 0;
             x = 100;
             y = 100;
             z = 100;
+
+            FK = new forward_Kinematics(this);
         }
         //----------------------------------------------------------------------------------------------------------------------------------
         private void update_indexLabel()
@@ -102,19 +128,18 @@ namespace gUI_Control_Robot
             }
         }
 
-        private void UpdateDegreeAndForwardKinematics(int step, ProgressBar progressBar1, ProgressBar progressBar2, Label label, int degree, ref int targetDegree, int min, int max, string motorCode)
+        private void UpdateDegreeAndForwardKinematics(int step, ProgressBar progressBar1, ProgressBar progressBar2, Label label, ref int targetDegree, int min, int max, string motorCode)
         {
             try
             {
                 // Update the target degree with the step
                 targetDegree += step;
-                degree = targetDegree;
                 int targetDegree1 = 0;
                 int targetDegree2 = 0;
 
                 // Calculate the forward kinematics using the updated target degree
                 double newX, newY, newZ;
-                forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
+                FK.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
 
                 // Round the calculated values for better display
                 newX = Math.Round(newX, 2);
@@ -153,41 +178,77 @@ namespace gUI_Control_Robot
         private void update_ProgreesBarIndex()
         {
             //Base
-            progressBar_Base1.Minimum = 0;
-            progressBar_Base1.Maximum = 90;
-            progressBar_Base2.Value = degree1;
-
-            progressBar_Base2.Minimum = 0;
-            progressBar_Base2.Maximum = 90;
-            progressBar_Base1.Value = degree1;
-
+            if (degree1 >= 0)
+            {
+                degree1_1 = degree1;
+                degree1_2 = 0;
+                progressBar_Base1.Minimum = 0;
+                progressBar_Base1.Maximum = 90;
+                progressBar_Base1.Value = degree1_1;
+            }
+            else
+            {
+                degree1_2 = degree1;
+                degree1_1 = 0;
+                progressBar_Base2.Minimum = 0;
+                progressBar_Base2.Maximum = 90;
+                progressBar_Base2.Value = Math.Abs(degree1_2);
+            }
 
             //J1
-            progressBar_J1_1.Minimum = 0;
-            progressBar_J1_1.Maximum = 135;
-            progressBar_J1_1.Value = degree2;
+            if (degree2 >= 0)
+            {
+                degree2_1 = degree2;
+                degree2_2 = 0;
+                progressBar_J1_1.Minimum = 0;
+                progressBar_J1_1.Maximum = 180;
+                progressBar_J1_1.Value = degree2_1;
+            }
+            else
+            {
+                degree2_2 = degree2;
+                degree2_1 = 0;
+                progressBar_J1_2.Minimum = 0;
+                progressBar_J1_2.Maximum = 45;
+                progressBar_J1_2.Value = Math.Abs(degree2_2);
+            }
 
-            progressBar_J1_2.Minimum = 0;
-            progressBar_J1_2.Maximum = 45;
-            progressBar_J1_2.Value = degree2;
 
             //J2
-            progressBar_J2_1.Minimum = 0;
-            progressBar_J2_1.Maximum = 120;
-            progressBar_J2_1.Value = degree3;
-
-            progressBar_J2_2.Minimum = 0;
-            progressBar_J2_2.Maximum = 90;
-            progressBar_J2_2.Value = degree3;
+            if (degree3 >= 0)
+            {
+                degree3_1 = degree3;
+                degree3_2 = 0;
+                progressBar_J2_1.Minimum = 0;
+                progressBar_J2_1.Maximum = 180;
+                progressBar_J2_1.Value = degree3_1;
+            }
+            else
+            {
+                degree3_2 = degree3;
+                degree3_1 = 0;
+                progressBar_J2_2.Minimum = 0;
+                progressBar_J2_2.Maximum = 90;
+                progressBar_J2_2.Value = Math.Abs(degree3_2);
+            }
 
             //J3
-            progressBar_J3_1.Minimum = 0;
-            progressBar_J3_1.Maximum = 135;
-            progressBar_J3_1.Value = degree4;
-
-            progressBar_J3_2.Minimum = 0;
-            progressBar_J3_2.Maximum = 135;
-            progressBar_J3_2.Value = degree4;
+            if (degree4 >= 0)
+            {
+                degree4_1 = degree4;
+                degree4_2 = 0;
+                progressBar_J3_1.Minimum = 0;
+                progressBar_J3_1.Maximum = 135;
+                progressBar_J3_1.Value = degree4_1;
+            }
+            else
+            {
+                degree4_2 = degree4;
+                degree4_1 = 0;
+                progressBar_J3_2.Minimum = 0;
+                progressBar_J3_2.Maximum = 135;
+                progressBar_J3_2.Value = Math.Abs(degree4_2);
+            }
         }
         private void update_Label()
         {
@@ -207,8 +268,15 @@ namespace gUI_Control_Robot
             degree2 = t2;
             degree3 = t3;
             degree4 = t4;
-            update_ProgreesBarIndex();
+            UpdateDegreeAndForwardKinematics(0, progressBar_Base1, progressBar_Base2, label_Base, ref degree1, -90, 90, "A");
+            UpdateDegreeAndForwardKinematics(0, progressBar_J1_1, progressBar_J1_2, label_J1, ref degree2, -45, 180, "B");
+            UpdateDegreeAndForwardKinematics(0, progressBar_J2_1, progressBar_J2_2, label_J2, ref degree3, -180, 120, "C");
+            UpdateDegreeAndForwardKinematics(0, progressBar_J3_1, progressBar_J3_2, label_J3, ref degree4, -135, 120, "D");
             update_Label();
+            Console.Write($"theta1 = {degree1}\n");
+            Console.Write($"theta2 = {degree2}\n");
+            Console.Write($"theta3 = {degree3}\n");
+            Console.Write($"theta4 = {degree4}\n");
         }
         //------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
@@ -338,7 +406,7 @@ namespace gUI_Control_Robot
                 if (step_Base.Text != null)
                 {
                     int step = Convert.ToInt32(step_Base.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_Base1, progressBar_Base2, label_Base, degree1, ref degree1, -90, 90, "A");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_Base1, progressBar_Base2, label_Base, ref degree1, -90, 90, "A");
                 }
             }
             catch (Exception error)
@@ -354,7 +422,7 @@ namespace gUI_Control_Robot
                 if (step_Base.Text != null)
                 {
                     int step = Convert.ToInt32(step_Base.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_Base1, progressBar_Base2, label_Base, degree1, ref degree1, -90, 90, "A");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_Base1, progressBar_Base2, label_Base, ref degree1, -90, 90, "A");
                 }
             }
             catch (Exception error)
@@ -370,7 +438,7 @@ namespace gUI_Control_Robot
                 if (step_J1 != null)
                 {
                     int step = Convert.ToInt32(step_J1.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J1_1, progressBar_J1_2, label_J1, degree2, ref degree2, -45, 135, "B");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J1_1, progressBar_J1_2, label_J1, ref degree2, -45, 180, "B");
                 }
             }
             catch (Exception error)
@@ -387,7 +455,7 @@ namespace gUI_Control_Robot
                 if (step_J1 != null)
                 {
                     int step = Convert.ToInt32(step_J1.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J1_1, progressBar_J1_2, label_J1, degree2, ref degree2, -45, 135, "B");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J1_1, progressBar_J1_2, label_J1, ref degree2, -45, 180, "B");
 
                 }
             }
@@ -404,7 +472,7 @@ namespace gUI_Control_Robot
                 if (step_J2 != null)
                 {
                     int step = Convert.ToInt32(step_J2.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J2_1, progressBar_J2_2, label_J2, degree3, ref degree3, -90, 120, "C");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J2_1, progressBar_J2_2, label_J2, ref degree3, -180, 120, "C");
 
                 }
             }
@@ -421,7 +489,7 @@ namespace gUI_Control_Robot
                 if (step_J2 != null)
                 {
                     int step = Convert.ToInt32(step_J2.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2_1, progressBar_J2_2, label_J2, degree3, ref degree3, -90, 120, "C");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J2_1, progressBar_J2_2, label_J2, ref degree3, -180, 120, "C");
 
                 }
             }
@@ -438,7 +506,7 @@ namespace gUI_Control_Robot
                 if (step_J3 != null)
                 {
                     int step = Convert.ToInt32(step_J3.Text);
-                    UpdateDegreeAndForwardKinematics(step, progressBar_J3_1, progressBar_J3_2, label_J3, degree4, ref degree4, -135, 120, "D");
+                    UpdateDegreeAndForwardKinematics(step, progressBar_J3_1, progressBar_J3_2, label_J3, ref degree4, -135, 120, "D");
 
                 }
             }
@@ -455,7 +523,7 @@ namespace gUI_Control_Robot
                 if (step_J3 != null)
                 {
                     int step = Convert.ToInt32(step_J3.Text);
-                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3_1, progressBar_J3_2, label_J3, degree4, ref degree4, -135, 120, "D");
+                    UpdateDegreeAndForwardKinematics(-step, progressBar_J3_1, progressBar_J3_2, label_J3, ref degree4, -135, 120, "D");
 
                 }
             }
@@ -481,7 +549,6 @@ namespace gUI_Control_Robot
             try
             {
                 calculateWindows calculateForm = new calculateWindows(this);
-
                 calculateForm.Show();
                 label_X.Text = txtBox_X.Text;
                 label_Y.Text = txtBox_Y.Text;
@@ -525,6 +592,12 @@ namespace gUI_Control_Robot
                 if (serialPort1.IsOpen)
                 {
                     serialPort1.Write(1 + "H" + "\n");
+                    degree1 = 0;
+                    degree2 = 0;
+                    degree3 = 0;
+                    degree4 = 0;
+                    update_ProgreesBarIndex();
+                    update_Label();
                 }
 
 
@@ -555,7 +628,7 @@ namespace gUI_Control_Robot
                     update_ProgreesBarIndex();
 
                     double newX, newY, newZ;
-                    forward_Kinematics.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
+                    FK.CalculateXYZ(degree1, degree2, degree3, degree4, out newX, out newY, out newZ);
 
                     serialPort1.Write(degree1 + "A" + "\n");
                     serialPort1.Write(degree2 + "B" + "\n");

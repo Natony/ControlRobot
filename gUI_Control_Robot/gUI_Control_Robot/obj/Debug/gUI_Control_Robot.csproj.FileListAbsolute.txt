@@ -26,3 +26,9 @@ C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\z
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.GraphMonitor.resources
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.CopyComplete
 C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\obj\Debug\gUI_Control_Robot.csproj.AssemblyReference.cache
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\atan2.dll
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\MathWorks.MATLAB.Engine.dll
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\MathWorks.MATLAB.Runtime.dll
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\MathWorks.MATLAB.Types.dll
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\MathWorks.MATLAB.Engine.xml
+C:\Users\Tin\Desktop\DA Robotics\gUI_Control_Robot\gUI_Control_Robot\bin\Debug\MathWorks.MATLAB.Types.xml

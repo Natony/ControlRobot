@@ -36,6 +36,20 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="atan2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\atan2\for_redistribution_files_only\atan2.dll</HintPath>
+    </Reference>
+    <Reference Include="MathWorks.MATLAB.Engine">
+      <HintPath>..\..\..\..\..\..\Program Files\MATLAB\R2022b\extern\dotnet\netstandard2.0\MathWorks.MATLAB.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="MathWorks.MATLAB.Runtime">
+      <HintPath>..\..\..\..\..\..\Program Files\MATLAB\R2022b\extern\dotnet\netstandard2.0\MathWorks.MATLAB.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="MathWorks.MATLAB.Types">
+      <HintPath>..\..\..\..\..\..\Program Files\MATLAB\R2022b\extern\dotnet\netstandard2.0\MathWorks.MATLAB.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="MWArray, Version=2.22.1.0, Culture=neutral, PublicKeyToken=e1d84a0da19db86f" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />

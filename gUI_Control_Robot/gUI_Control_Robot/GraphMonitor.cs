@@ -6,7 +6,7 @@ using ZedGraph;
 namespace gUI_Control_Robot
 {
     public partial class GraphMonitor : Form
-    {
+    {  
         private MainWindows mainForm;
         private RollingPointPairList points1;
         private RollingPointPairList points2;

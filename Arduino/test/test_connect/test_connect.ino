@@ -26,8 +26,11 @@ int8_t indexOfA, indexOfB, indexOfC, indexOfD, indexOfH;
 // Thêm biến để lưu trữ góc mục tiêu và góc hiện tại của động cơ
 int curDegreeMotor1 = 0, curDegreeMotor2 = 0, curDegreeMotor3 = 0, curDegreeMotor4 = 0;
 int tarDegreeMotor1 = 0, tarDegreeMotor2 = 0, tarDegreeMotor3 = 0, tarDegreeMotor4 = 0;
+int diffDegreeMotor1 = 0, diffDegreeMotor2 = 0, diffDegreeMotor3 = 0, diffDegreeMotor4 = 0;
 int stepsMotor1, stepsMotor2, stepsMotor3, stepsMotor4;
 int tarDegree = 0, curDegree = 0;
+int tt_DC = 0;
+int step3 = 0;
 
 int state1 = 0;
 int state2 = 0;
@@ -110,15 +113,15 @@ void Parse_the_Data() {
 
 void motorStepper1() {
   if (tarDegreeMotor1 != curDegreeMotor1) {
-    int diffDegreeMotor1 = tarDegreeMotor1 - curDegreeMotor1;
+    diffDegreeMotor1 = tarDegreeMotor1 - curDegreeMotor1;
 
     stepsMotor1 = (diffDegreeMotor1) / 0.05625;
     digitalWrite(dirX, stepsMotor1 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor1); i++) {
       digitalWrite(stepX, HIGH);
-      delayMicroseconds(1000);
+      delayMicroseconds(1200);
       digitalWrite(stepX, LOW);
-      delayMicroseconds(1000);
+      delayMicroseconds(1200);
     }
 
     curDegreeMotor1 = tarDegreeMotor1; // Cập nhật góc hiện tại
@@ -127,10 +130,10 @@ void motorStepper1() {
 
 void motorStepper2() {
   if (tarDegreeMotor2 != curDegreeMotor2) {
-    int diffDegreeMotor2 = tarDegreeMotor2 - curDegreeMotor2;
+    diffDegreeMotor2 = tarDegreeMotor2 - curDegreeMotor2;
 
     stepsMotor2 = diffDegreeMotor2 / 0.0375;
-    digitalWrite(dirY, stepsMotor2 > 0 ? HIGH : LOW); // Xác định hướng quay dựa trên stepsMotor1
+    digitalWrite(dirY, stepsMotor2 < 0 ? HIGH : LOW); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor2); i++) {
       digitalWrite(stepY, HIGH);
       delayMicroseconds(3000);
@@ -138,15 +141,28 @@ void motorStepper2() {
       delayMicroseconds(3000);
     }
 
+    step3 =  (diffDegreeMotor2/1.5) / 0.025;
+    digitalWrite(dirZ, step3 < 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    for (int i = 0; i < abs(step3); i++) {
+      digitalWrite(stepZ, HIGH);
+      delayMicroseconds(3000);
+      digitalWrite(stepZ, LOW);
+      delayMicroseconds(3000);    
+    }
     curDegreeMotor2 = tarDegreeMotor2; // Cập nhật góc hiện tại
+    //tt_DC = 1;
   }
 }
 void motorStepper3() {
   if (tarDegreeMotor3 != curDegreeMotor3) {
-    int diffDegreeMotor3 = tarDegreeMotor3 - curDegreeMotor3;
-
+    diffDegreeMotor3 = tarDegreeMotor3 - curDegreeMotor3;
+    //if (tt_DC == 1)
+    //{
+    //  diffDegreeMotor3 = diffDegreeMotor3 + (diffDegreeMotor2 - diffDegreeMotor2/1.5);
+    //}
+    
     stepsMotor3 = diffDegreeMotor3 / 0.025;
-    digitalWrite(dirZ, stepsMotor3 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    digitalWrite(dirZ, stepsMotor3 < 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor3); i++) {
       digitalWrite(stepZ, HIGH);
       delayMicroseconds(3000);
@@ -155,13 +171,14 @@ void motorStepper3() {
     }
 
     curDegreeMotor3 = tarDegreeMotor3; // Cập nhật góc hiện tại
+    //tt_DC = 0;
   }
 }
 void motorStepper4() {
   if (tarDegreeMotor4 != curDegreeMotor4) {
-    int diffDegreeMotor4 = tarDegreeMotor4 - curDegreeMotor4;
+    diffDegreeMotor4 = tarDegreeMotor4 - curDegreeMotor4;
 
-    stepsMotor4 = diffDegreeMotor4 / 0.045;
+    stepsMotor4 = diffDegreeMotor4 / 0.09;
     digitalWrite(dirA, stepsMotor4 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor4); i++) {
       digitalWrite(stepA, HIGH);
@@ -202,64 +219,64 @@ void setHome(){
   {
       digitalWrite(dirX, LOW);
       digitalWrite(stepX, HIGH);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
       digitalWrite(stepX, LOW);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
   }
     if(state2 == 0 )
   {
       digitalWrite(dirY, HIGH);
       digitalWrite(stepY, HIGH);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
       digitalWrite(stepY, LOW);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
   }
     if(state3 == 0 && state2 == 1 && state4 == 1)
   {
-      digitalWrite(dirZ, HIGH);
+      digitalWrite(dirZ, LOW);
       digitalWrite(stepZ, HIGH);
-      delayMicroseconds(3000);
+      delayMicroseconds(800);
       digitalWrite(stepZ, LOW);
-      delayMicroseconds(3000);
+      delayMicroseconds(800);
   }
     if(state4 == 0 && state2 == 1)
   {
       digitalWrite(dirA, HIGH);
       digitalWrite(stepA, HIGH);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
       digitalWrite(stepA, LOW);
-      delayMicroseconds(1000);
+      delayMicroseconds(800);
   }
   if(state1 == 1 && state2 == 1 && state3 == 1 && state4 == 1)
   {
     digitalWrite(stepX, LOW);
     delayMicroseconds(1000);
-    digitalWrite(dirX, LOW);
-    for(int i = 0; i <= 540; i++)
+    digitalWrite(dirX, HIGH);
+    for(int i = 0; i <= 600; i++)
     {
       digitalWrite(stepX, HIGH);
       delayMicroseconds(1000);
       digitalWrite(stepX, LOW);
       delayMicroseconds(1000);
     }
-    digitalWrite(dirY, HIGH);
-    for(int i = 0; i <= 3200; i++)
-    {
-      digitalWrite(stepY, LOW);
-      delayMicroseconds(1000);
-      digitalWrite(stepY, LOW);
-      delayMicroseconds(1000);
-    }
-    digitalWrite(dirZ, LOW);
-    for(int i = 0; i <= 4550; i++)
+    digitalWrite(dirZ, HIGH);
+    for(int i = 0; i <= 5050; i++)
     {
       digitalWrite(stepZ, HIGH);
       delayMicroseconds(2000);
       digitalWrite(stepZ, LOW);
       delayMicroseconds(2000); 
     }
+    digitalWrite(dirY, LOW);
+    for(int i = 0; i <= 1350; i++)
+    {
+      digitalWrite(stepY, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepY, LOW);
+      delayMicroseconds(1000);
+    }
     digitalWrite(dirA, LOW);
-    for(int i = 0; i <=2750; i++)
+    for(int i = 0; i <=1280; i++)
     {
       digitalWrite(stepA, HIGH);
       delayMicroseconds(1000);
@@ -323,6 +340,7 @@ void loop() {
   if(statusSetHome == 1){
     setHome();
   }  
+ 
 }
 
 
