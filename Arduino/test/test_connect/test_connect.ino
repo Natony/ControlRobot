@@ -14,6 +14,9 @@
 #define dirA 13
   
 #define ena 8
+
+#define magnet A1
+
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 ezButton limitSwitchMotor1(9);
 ezButton limitSwitchMotor2(10);
@@ -21,7 +24,7 @@ ezButton limitSwitchMotor3(11);
 ezButton limitSwitchMotor4(A0);
 char c;
 String dataIn;
-int8_t indexOfA, indexOfB, indexOfC, indexOfD, indexOfH;
+int8_t indexOfA, indexOfB, indexOfC, indexOfD, indexOfH, indexOfM;
 
 // Thêm biến để lưu trữ góc mục tiêu và góc hiện tại của động cơ
 int curDegreeMotor1 = 0, curDegreeMotor2 = 0, curDegreeMotor3 = 0, curDegreeMotor4 = 0;
@@ -38,6 +41,7 @@ int state3 = 0;
 int state4 = 0;
 
 int statusSetHome = 0; 
+int statusMagnet = 0; 
 void setup() {
   Serial.begin(9600);
 
@@ -60,6 +64,8 @@ void setup() {
   pinMode(stepA, OUTPUT);
   pinMode(dirA, OUTPUT);
 
+  pinMode(magnet, OUTPUT);
+
   digitalWrite(ena, LOW);
   
   // steup debounce time limit switch
@@ -81,13 +87,14 @@ void Receive_Serial_Data() {
 }
 
 void Parse_the_Data() {
-  String str_stpMoto1Degree, str_stpMoto2Degree, str_stpMoto3Degree, str_stpMoto4Degree, str_SetHome;;
+  String str_stpMoto1Degree, str_stpMoto2Degree, str_stpMoto3Degree, str_stpMoto4Degree, str_SetHome, str_Magnet;
 
   indexOfA = dataIn.indexOf("A");
   indexOfB = dataIn.indexOf("B");
   indexOfC = dataIn.indexOf("C");
   indexOfD = dataIn.indexOf("D");
   indexOfH = dataIn.indexOf("H");
+  indexOfM = dataIn.indexOf("M");
 
   if (indexOfA > -1) {
     str_stpMoto1Degree = dataIn.substring(0, indexOfA);
@@ -108,6 +115,10 @@ void Parse_the_Data() {
   if (indexOfH > -1) {
     str_SetHome = dataIn.substring(indexOfD + 1, indexOfH);
     statusSetHome = str_SetHome.toInt();
+  }
+  if (indexOfM > -1) {
+    str_Magnet = dataIn.substring(indexOfH + 1, indexOfM);
+    statusMagnet = str_Magnet.toInt();
   }
 }
 
@@ -162,7 +173,7 @@ void motorStepper3() {
     //}
     
     stepsMotor3 = diffDegreeMotor3 / 0.025;
-    digitalWrite(dirZ, stepsMotor3 < 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
+    digitalWrite(dirZ, stepsMotor3 > 0 ? LOW : HIGH); // Xác định hướng quay dựa trên stepsMotor1
     for (int i = 0; i < abs(stepsMotor3); i++) {
       digitalWrite(stepZ, HIGH);
       delayMicroseconds(3000);
@@ -223,7 +234,7 @@ void setHome(){
       digitalWrite(stepX, LOW);
       delayMicroseconds(800);
   }
-    if(state2 == 0 )
+    if(state2 == 0 && state3 == 1 && state4 == 1)
   {
       digitalWrite(dirY, HIGH);
       digitalWrite(stepY, HIGH);
@@ -231,7 +242,7 @@ void setHome(){
       digitalWrite(stepY, LOW);
       delayMicroseconds(800);
   }
-    if(state3 == 0 && state2 == 1 && state4 == 1)
+    if(state3 == 0)
   {
       digitalWrite(dirZ, LOW);
       digitalWrite(stepZ, HIGH);
@@ -239,7 +250,7 @@ void setHome(){
       digitalWrite(stepZ, LOW);
       delayMicroseconds(800);
   }
-    if(state4 == 0 && state2 == 1)
+    if(state4 == 0 && state3 == 1)
   {
       digitalWrite(dirA, HIGH);
       digitalWrite(stepA, HIGH);
@@ -260,7 +271,7 @@ void setHome(){
       delayMicroseconds(1000);
     }
     digitalWrite(dirZ, HIGH);
-    for(int i = 0; i <= 5050; i++)
+    for(int i = 0; i <= 3700; i++)
     {
       digitalWrite(stepZ, HIGH);
       delayMicroseconds(2000);
@@ -312,6 +323,16 @@ void display() {
   lcd.setCursor(5, 1);
   lcd.print(tarDegreeMotor4);
 }
+
+void setMagnet(){
+  if(statusMagnet == 1){
+    digitalWrite(magnet, 255);
+  }
+  else{
+    digitalWrite(magnet, 0);
+  }
+}
+
 void loop() {
   //call limit in loop
 
@@ -334,13 +355,13 @@ void loop() {
   motorStepper3();
   motorStepper4();
   // setHome();
-
   display();
 
   if(statusSetHome == 1){
     setHome();
   }  
  
+  setMagnet();
 }
 
 

@@ -539,7 +539,7 @@ namespace gUI_Control_Robot
             {
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(0 + "E" + "\n");
+                    serialPort1.Write(0 + "M" + "\n");
                 }
             }
         }
@@ -548,6 +548,10 @@ namespace gUI_Control_Robot
         {
             try
             {
+                degree1 = 0;
+                degree2 = 0;
+                degree3 = 0;
+                degree4 = 0;
                 calculateWindows calculateForm = new calculateWindows(this);
                 calculateForm.Show();
                 label_X.Text = txtBox_X.Text;
@@ -560,7 +564,10 @@ namespace gUI_Control_Robot
                     serialPort1.Write(degree3 + "C" + "\n");
                     serialPort1.Write(degree4 + "D" + "\n");
                 }
-
+                Console.Write($"theta1 = {degree1}\n");
+                Console.Write($"theta2 = {degree2}\n");
+                Console.Write($"theta3 = {degree3}\n");
+                Console.Write($"theta4 = {degree4}\n");
             }
             catch (Exception error)
             {
@@ -614,7 +621,7 @@ namespace gUI_Control_Robot
             {
                 if (!checkBox_simultaneous.Checked)
                 {
-                    serialPort1.Write(1 + "E" + "\n");
+                    serialPort1.Write(1 + "M" + "\n");
                 }
             }
         }

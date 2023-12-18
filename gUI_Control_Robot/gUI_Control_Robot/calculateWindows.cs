@@ -88,6 +88,7 @@ namespace gUI_Control_Robot
             if(checkS1 == 'C')
             {
                 mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
+                this.Close();
             }
             else
             {
@@ -102,6 +103,7 @@ namespace gUI_Control_Robot
             if(checkS2 == 'C')
             {
                 mainForm.UpdateAngles(t1Cal, t2Cal, t3Cal, t4Cal);
+                this.Close();
             }
             else
             {
